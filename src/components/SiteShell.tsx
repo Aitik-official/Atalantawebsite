@@ -1,15 +1,17 @@
 import type { ReactNode } from "react";
+import TopBar from "./TopBar";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import FloatingPhone from "./FloatingPhone";
+import FloatingWhatsApp from "./FloatingWhatsApp";
 
 export default function SiteShell({ children }: { children: ReactNode }) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-white dark:bg-[#0f1115] text-stone-900 dark:text-stone-100">
+      <TopBar />
       <Navbar />
-      <main className="flex min-w-0 flex-1 flex-col overflow-x-clip">{children}</main>
+      <main className="flex min-w-0 flex-1 flex-col">{children}</main>
       <Footer />
-      <FloatingPhone />
-    </>
+      <FloatingWhatsApp />
+    </div>
   );
 }

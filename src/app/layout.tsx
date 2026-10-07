@@ -28,7 +28,6 @@ const oswald = Oswald({
   weight: ["500", "600", "700"],
 });
 
-/** Matches the geometric extended “eratic” wordmark in the logo */
 const michroma = Michroma({
   variable: "--font-michroma",
   subsets: ["latin"],
@@ -41,10 +40,20 @@ export const metadata: Metadata = {
     template: `%s | ${site.shortName}`,
   },
   description: site.description,
+  keywords: [
+    "Atlanta Furniture",
+    "Atlanta World",
+    "Plastic Chairs Mumbai",
+    "Student Benches India",
+    "Office Chairs Manufacturer",
+    "Commercial Dustbins 240L",
+    "Polymer Seating India",
+    "Institutional Furniture",
+  ],
   icons: {
-    icon: [{ url: "/logo/krednce-favicon.jpeg", type: "image/jpeg" }],
-    apple: [{ url: "/logo/krednce-favicon.jpeg", type: "image/jpeg" }],
-    shortcut: "/logo/krednce-favicon.jpeg",
+    icon: [{ url: "/logo/atlanta-logo.png" }],
+    apple: [{ url: "/logo/atlanta-logo.png" }],
+    shortcut: "/logo/atlanta-logo.png",
   },
 };
 
@@ -56,9 +65,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${playfair.variable} ${oswald.variable} ${michroma.variable} h-full`}
+      className={`${poppins.variable} ${playfair.variable} ${oswald.variable} ${michroma.variable} h-full light`}
     >
-      <body className="flex min-h-full flex-col font-sans antialiased">
+      <body className="flex min-h-full flex-col font-sans antialiased bg-[#faf9f6] text-[#1c1e22]">
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

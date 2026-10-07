@@ -1,205 +1,35 @@
-export const productDetails: Record<
-  string,
-  { images: string[]; body: string; specs: string[] }
-> = {
-  "fencing-panels": {
-    images: [
-      "/products/fencing-1.jpeg",
-      "/products/fencing-2.jpeg",
-      "/products/fencing-3.jpeg",
-    ],
-    body: "Fencing panels and hoardings are corrugated galvanized steel boundaries for construction sites and industrial yards. They are supplied with U-channels, GI pipes, clamps, and concrete blocks. Discontinuous panels are fixed on concrete blocks at 2 metre intervals and back-stayed at the junction. Continuous fencing overlaps the sheets so there is no gap in the run, and is usually back-stayed at 2.5 metre intervals with galvanized ERW pipes. Both types are fireproof, strong, and can be installed and removed.",
-    specs: [
-      "Fencing sheet: 0.30 mm x 1.0 m x 2.0 m",
-      "Standard colour: RAL 9002 off-white, with other RAL colours available",
-      "Galvanized U-channel: 40 mm x 40 mm x 40 mm, 1.2 mm to 2.0 mm, 2.18 m",
-      "GI pipe: 42 mm OD, 2.2 m long, 1.2 mm to 2.0 mm",
-      "GI clamp: 3.0 mm",
-      "Concrete block: 600 mm x 400 mm x 200 mm",
-      "Frame: 2.15 m x 2.0 m (4.30 m²)",
-      "Types: discontinuous panels, or continuous overlapped sheets",
-    ],
-  },
-  "pvc-eco-fence": {
-    images: ["/products/pvc-2.jpeg", "/products/pvc-3.jpeg", "/products/pvc-1.jpg"],
-    body: "PVC eco fence is a light, rust-free boundary for residential, commercial, and agricultural sites. Heights run from 2.4 m to 5.0 m, and can be made to specification. Standard sizes are also available. It is lighter than a metal fence, weather resistant, and simple to install. The range also includes PVC eco hoarding as a flat panel.",
-    specs: [
-      "Height: 2.4 m to 5.0 m, or to specification",
-      "Material: PVC",
-      "Sheet clips: 4",
-      "Concrete foundation: 1000 mm x 400 mm x 400 mm at 2.5 m centres",
-      "Other foundations: 1000 x 500 x 500 mm, 1000 x 300 x 300 mm, 1000 x 600 x 600 mm",
-      "Frame pipe: 48 mm OD x 1.5 mm at 2.5 m centres",
-      "Railing: top and bottom, or as specified",
-      "Couplers: putlog coupler for the railing, swivel coupler for the frame",
-    ],
-  },
-  "wire-mesh-fence": {
-    images: [
-      "/products/wiremesh-1.jpg",
-      "/products/wiremesh-2.jpg",
-      "/products/wiremesh-3.jpg",
-    ],
-    body: "Wire mesh, weld mesh, and Heras fence in stainless steel for sites that need corrosion resistance. Grades include 304, 304L, 316, and 316L, suitable where the mesh has to stand up to acids, alkalis, and higher temperatures. Supplied in rolls, cut to size, or assembled.",
-    specs: [
-      "Grades: stainless steel 304, 304L, 316, 316L, and others",
-      "Types: wire mesh, weld mesh, Heras fence",
-      "Forms: rolls, cut to size, or assembled",
-      "Resistance: acid, alkali, and high temperature",
-    ],
-  },
-  "chain-link-fence": {
-    images: ["/products/chainlink-1.jpg", "/products/chainlink-3.jpg"],
-    body: "Chain link fence, also called hurricane fence or diamond-mesh fence, is woven steel wire in a diamond pattern. The mesh stays open, so the line beyond the fence remains visible. It is used for yards, playgrounds, sports fields, parks, factories, and construction boundaries. Heights run from 1.6 ft to 20 ft, with a choice of gauge and mesh size.",
-    specs: [
-      "Material: low carbon steel, galvanized wire, aluminum alloy, stainless steel, or PVC",
-      "Finish: galvanized or vinyl coated; aluminized and Galfan also available",
-      "PVC colours: dark green, black, brown, red, orange, white, yellow",
-      "Height: 1.6 ft to 20 ft",
-      "Gauges: 6 to 16. 9 gauge is the usual size; 11 and 11-1/2 gauge for temporary fence; 6 gauge for heavier security",
-      "Mesh: from 3/8 in up to 3-1/2 in",
-    ],
-  },
-  "gi-mill-finish-coils": {
-    images: ["/products/gi-main.jpeg", "/products/gi-2.jpg"],
-    body: "Hot dip galvanized steel coils and sheets to ASTM A653, JIS G3302, and EN 10346. The steel is coated with zinc for corrosion resistance. Surface treatments include regular and minimum spangle, zero spangle, oiled and dry, chromated, non-skin pass, and skin pass. Size and thickness can be made to order. Used in transport, light industry, civil work, farming, and construction.",
-    specs: [
-      "Thickness: 0.30 mm to 3.80 mm",
-      "Width: 600 mm to 1250 mm",
-      "Zinc coating: 30 to 275 g/m²",
-      "Internal diameter: 508 mm or 610 mm",
-      "Coil weight: 3 to 12 MT",
-      "Quality: commercial and structural",
-      "Standards: JIS G 3302, ASTM A 653M, EN 10327",
-      "Grades: SGCC, CS, FS, SS, LFQ, DX51D+Z, S280GD",
-    ],
-  },
-  "ppgi-color-coated-coils": {
-    images: ["/products/ppgi-1.jpg", "/products/ppgi-3.jpg", "/products/ppgi-4.jpg"],
-    body: "Pre-painted galvanized steel coils combine a zinc coating with a colour finish. Standard colours include RAL 9002 and RAL 1001. Coatings include regular modified polyester (RMP) and high durable polyester. Supplied as coil, sheet, or slit coil, with weight and size to the order.",
-    specs: [
-      "Thickness: 0.28 mm to 1.50 mm",
-      "Width: 40 mm to 1250 mm",
-      "Zinc coating: 80 GSM (G40) to 275 GSM (G90)",
-      "Coil weight: 3.5 MT to 4.5 MT",
-      "Colours: RAL 9002 and RAL 1001",
-      "Coatings: regular modified polyester and high durable polyester",
-      "Forms: coil, sheet, or slit coil",
-    ],
-  },
-  "sandwich-panels": {
-    images: ["/products/sandwich-1.jpeg", "/products/sandwich-2.jpeg"],
-    body: "Sandwich panels are a rigid core between two metal skins. The core is polyurethane (PUR) or polyisocyanurate (PIR) at 35 to 40 kg/m³. A typical build is a coated aluminium or GI top skin, a foam core, and a foil or shallow-rib liner. Profiled panels are made in 35, 50, 75, and 100 mm. Wall and flat panels are made in 50, 75, and 100 mm. Used for roofs, walls, prefabricated rooms, and cold stores.",
-    specs: [
-      "Profiled panel thickness: 35 mm, 50 mm, 75 mm, 100 mm",
-      "Wall and flat panel thickness: 50 mm, 75 mm, 100 mm",
-      "Top skin: aluminium or GI polyester coated",
-      "Core: PUR or PIR foam, 35 to 40 kg/m³",
-      "Liner: aluminium foil, or aluminium / GI polyester coated ribbed sheet",
-    ],
-  },
-  "insulated-sandwich-panels": {
-    images: ["/products/sandwich-1.jpeg", "/products/sandwich-2.jpeg"],
-    body: "Sandwich panels are a rigid core between two metal skins. The core is polyurethane (PUR) or polyisocyanurate (PIR) at 35 to 40 kg/m³. A typical build is a coated aluminium or GI top skin, a foam core, and a foil or shallow-rib liner. Profiled panels are made in 35, 50, 75, and 100 mm. Wall and flat panels are made in 50, 75, and 100 mm. Used for roofs, walls, prefabricated rooms, and cold stores.",
-    specs: [
-      "Profiled panel thickness: 35 mm, 50 mm, 75 mm, 100 mm",
-      "Wall and flat panel thickness: 50 mm, 75 mm, 100 mm",
-      "Top skin: aluminium or GI polyester coated",
-      "Core: PUR or PIR foam, 35 to 40 kg/m³",
-      "Liner: aluminium foil, or aluminium / GI polyester coated ribbed sheet",
-    ],
-  },
-  "profile-roofing-sheets": {
-    images: [
-      "/products/corrugated-1.jpg",
-      "/products/corrugated-2.jpg",
-      "/products/corrugated-3.jpg",
-    ],
-    body: "Single skin profile roofing sheets for warehouse roofing and cladding. Profiles are sinusoidal, trapezoidal, and box. Sheets are made in the colour and length the site needs, in steel, aluminium, or plastic, with polyester, PVF2, or plastisol coatings. They are light to fix and stand up to weather.",
-    specs: [
-      "Profiles: sinusoidal, trapezoidal, box",
-      "38/200 sheeting: 1023 mm nominal, 1000 mm covering",
-      "Materials: steel, aluminium, plastic",
-      "Coatings: polyester, PVF2, plastisol",
-    ],
-  },
-  "corrugated-color-sheets": {
-    images: [
-      "/products/corrugated-1.jpg",
-      "/products/corrugated-2.jpg",
-      "/products/corrugated-3.jpg",
-    ],
-    body: "Single skin profile roofing sheets for warehouse roofing and cladding. Profiles are sinusoidal, trapezoidal, and box. Sheets are made in the colour and length the site needs, in steel, aluminium, or plastic, with polyester, PVF2, or plastisol coatings. They are light to fix and stand up to weather.",
-    specs: [
-      "Profiles: sinusoidal, trapezoidal, box",
-      "38/200 sheeting: 1023 mm nominal, 1000 mm covering",
-      "Materials: steel, aluminium, plastic",
-      "Coatings: polyester, PVF2, plastisol",
-    ],
-  },
-  "decking-sheets": {
-    images: [
-      "/products/decking-1.jpg",
-      "/products/decking-2.jpg",
-      "/products/decking-3.jpg",
-    ],
-    body: "Metal decking sheets for composite floors. The ribbed profile, with embossments, locks into the concrete so the sheet is both permanent formwork and tensile reinforcement. Standard profiles are 45/150 and 75/305. Made from pre-galvanized steel to ASTM A653, Grade D, zinc G90. Other grades can be supplied. Used on multi-storey floors, mezzanines, walkways, and platforms.",
-    specs: [
-      "45/150: 900 mm covering width",
-      "75/305: 914 mm covering width",
-      "Thickness: 0.5 mm to 1.5 mm",
-      "Steel: pre-galvanized, Grade D",
-      "Zinc: G90 (275 g/m²)",
-      "Standard: ASTM A 653",
-    ],
-  },
-  "z-c-purlins": {
-    images: ["/products/purlins-1.jpg", "/products/purlins-2.jpg"],
-    body: "Z and C purlins for roof and wall framing, made from structural grade galvanized steel to ASTM A653 Grade 50 G90. They are secondary supports for roofing sheets, cladding, sandwich panels, and liner trays, for spans up to 10 m. Joints use an overlap or a sleeve. Punching can be detailed to the drawing, and quick-fix anti-sag rods are available. Minimum yield strength is 350 N/mm².",
-    specs: [
-      "Material: ASTM A653 Grade 50 G90",
-      "Also referenced: ASTM A446 Grade D G90, BS EN 10147 S350GD Z275 MAC",
-      "Yield strength: 350 N/mm² minimum",
-      "Span: up to 10.0 m",
-      "Joints: overlap or sleeved",
-      "Accessories: quick-fix anti-sag rods",
-      "Punching: to the drawing",
-    ],
-  },
-  "drywall-partition-systems": {
-    images: ["/products/drywall-1.jpeg", "/products/drywall-2.jpeg"],
-    body: "Drywall partition framing in galvanized steel: stud, track, furring channel, main channel, and wall angle. The frame takes single or double layers of gypsum board. Studs have a knurled face so the board screws in cleanly, and can be boxed for extra strength. Profiles comply with EN-BS and ASTM standards.",
-    specs: [
-      "Components: stud, track, furring channel, main channel, wall angle",
-      "Thickness: 0.35 mm to 0.9 mm",
-      "Width: 50 mm to 123 mm",
-      "Length: 3 m standard",
-      "Standards: EN-BS and ASTM",
-    ],
-  },
-  "roofing-flashings-gutters": {
-    images: [
-      "/products/flashing-1.jpg",
-      "/products/flashing-2.jpg",
-      "/products/flashing-3.jpg",
-    ],
-    body: "Flashings, rain gutters, ridge ventilators, and sliding pieces for metal roofs and cladding. Flashings include apron, step, counter, valley, ridge, and wall types. Gutters include eave, box, and valley. Standard rainwater goods are 3 metres long. Other lengths, sizes, and colours can be made for the roof.",
-    specs: [
-      "Flashings: apron, step, counter, valley, drip edge, ridge, barge, corner, parapet, side wall",
-      "Gutters: eave, box, valley",
-      "Also: ridge ventilators and sliding components",
-      "Materials: GI and aluminium profile sheet",
-      "Standard length: 3 m, with other lengths to order",
-    ],
-  },
-  "grp-translucent-sheets": {
-    images: ["/products/skylights-3.jpg", "/products/skylights-2.jpg"],
-    body: "GRP translucent sheets for skylights and rooflights. The corrugated profile matches metal roofing so the sheet sits in the same run. Daylight through the roof cuts the need for artificial light. Sheets are made in clear and tinted finishes.",
-    specs: [
-      "Material: glass reinforced plastic",
-      "Profile: corrugated, to suit the roof sheet",
-      "Use: skylights and rooflights in metal roofs",
-      "Finishes: clear, off-white, and tinted",
-    ],
-  },
-};
+import atlantaProducts from "./atlanta-furniture.json";
+import { ProductItem } from "./site";
+
+export const allFurnitureProducts: ProductItem[] = atlantaProducts as unknown as ProductItem[];
+
+export function getProductBySlug(slug: string): ProductItem | undefined {
+  return allFurnitureProducts.find(
+    (p) => p.slug === slug || p.id === slug || p.slug.toLowerCase() === slug.toLowerCase()
+  );
+}
+
+export function getProductsByCategory(category: string): ProductItem[] {
+  if (!category || category.toLowerCase() === "all") return allFurnitureProducts;
+  return allFurnitureProducts.filter(
+    (p) => p.category.toLowerCase().includes(category.toLowerCase())
+  );
+}
+
+export function getRelatedProducts(currentId: string, category: string, limit = 4): ProductItem[] {
+  return allFurnitureProducts
+    .filter((p) => p.id !== currentId && p.category === category)
+    .slice(0, limit);
+}
+
+export function searchProducts(query: string): ProductItem[] {
+  const q = query.toLowerCase().trim();
+  if (!q) return allFurnitureProducts;
+  return allFurnitureProducts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.subcategory.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+  );
+}

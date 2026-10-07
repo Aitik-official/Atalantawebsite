@@ -1,165 +1,270 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import ProductBack from "@/components/ProductBack";
-import ProductGallery from "@/components/ProductGallery";
-import SectionButton from "@/components/SectionButton";
-import { productDetails } from "@/data/product-details";
-import { productGroups } from "@/data/site";
+import Link from "next/link";
+import { getProductBySlug, getRelatedProducts } from "@/data/product-details";
+import { products, site } from "@/data/site";
+import {
+  Star,
+  ShieldCheck,
+  Truck,
+  MessageSquare,
+  Phone,
+  ArrowLeft,
+  ArrowRight,
+  Award,
+} from "lucide-react";
 
-type PageProps = { params: Promise<{ slug: string }> };
+interface ProductPageProps {
+  params: Promise<{ slug: string }>;
+}
 
-function findProduct(slug: string) {
-  for (const group of productGroups) {
-    const item = group.items.find((entry) => entry.slug === slug);
-    if (item) return { item, group };
+export async function generateStaticParams() {
+  return products.map((p) => ({
+    slug: p.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: ProductPageProps) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+  if (!product) return { title: "Product Not Found" };
+
+  return {
+    title: `${product.title} | ${product.category} | Atlanta Furniture`,
+    description: product.description,
+  };
+}
+
+export default async function ProductDetailPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+
+  if (!product) {
+    notFound();
   }
-  return null;
-}
 
-function splitSpec(spec: string) {
-  const splitAt = spec.indexOf(":");
-  if (splitAt === -1) return { label: spec, value: "" };
-  return { label: spec.slice(0, splitAt).trim(), value: spec.slice(splitAt + 1).trim() };
-}
-
-export function generateStaticParams() {
-  return productGroups.flatMap((group) =>
-    group.items.map((item) => ({ slug: item.slug })),
+  const related = getRelatedProducts(product.id, product.category, 4);
+  const whatsappMessage = encodeURIComponent(
+    `Hello Atlanta Furniture, I am interested in purchasing "${product.title}" (${product.category} - ${product.price}). Please send commercial catalog and bulk quotation.`
   );
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const found = findProduct(slug);
-  if (!found) return { title: "Product" };
-  return { title: found.item.title, description: found.item.description };
-}
-
-export default async function ProductPage({ params }: PageProps) {
-  const { slug } = await params;
-  const found = findProduct(slug);
-  if (!found) notFound();
-
-  const { item, group } = found;
-  const detail = productDetails[item.slug];
-  const images = detail?.images?.length ? detail.images : [item.image];
-  const specs = (detail?.specs ?? []).map(splitSpec);
-  const related = group.items.filter((entry) => entry.slug !== item.slug).slice(0, 3);
 
   return (
-    <article className="bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-14 xl:max-w-7xl">
-        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-7">
-            <div className="mb-4 flex flex-wrap items-center gap-2 sm:gap-3">
-              <ProductBack fallback={`/services?tab=${group.id}`} />
-              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#8a8a8a]">
-                <Link href="/services" className="transition hover:text-industrial-steel">
-                  Products
-                </Link>
-                <span className="mx-2 text-[#ccc]">/</span>
-                <Link
-                  href={`/services?tab=${group.id}`}
-                  className="transition hover:text-industrial-steel"
-                >
-                  {group.label}
-                </Link>
-                <span className="mx-2 text-[#ccc]">/</span>
-                <span className="text-industrial-ink">{item.title}</span>
-              </p>
-            </div>
-            <ProductGallery images={images} title={item.title} />
+    <div className="min-h-screen bg-[#faf9f6] text-stone-900 pb-20">
+      {/* Breadcrumb Bar */}
+      <div className="border-b border-stone-200 bg-white py-3.5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-stone-500 font-medium">
+            <Link href="/" className="hover:text-[#b8860b]">
+              Home
+            </Link>
+            <span>/</span>
+            <Link href="/products" className="hover:text-[#b8860b]">
+              Products
+            </Link>
+            <span>/</span>
+            <Link
+              href={`/products?category=${encodeURIComponent(product.category)}`}
+              className="hover:text-[#b8860b]"
+            >
+              {product.category}
+            </Link>
+            <span>/</span>
+            <span className="text-stone-900 font-bold truncate max-w-[150px] sm:max-w-none">
+              {product.title}
+            </span>
           </div>
 
-          <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-industrial-steel">
-              {group.label}
-            </p>
-            <h1 className="font-display mt-3 text-[1.85rem] font-medium uppercase leading-[1.05] tracking-[0.02em] text-industrial-ink sm:text-[2.45rem]">
-              {item.title}
+          <Link
+            href="/products"
+            className="hidden sm:inline-flex items-center gap-1 text-[#b8860b] font-bold hover:underline"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Catalog
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Product Showcase Section */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Left: Product Images Column (5 Cols) */}
+          <div className="lg:col-span-6 flex flex-col gap-4">
+            <div className="relative aspect-square w-full rounded-3xl bg-white border border-stone-200/90 p-8 flex items-center justify-center overflow-hidden shadow-sm">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="max-h-full max-w-full object-contain"
+              />
+              <span className="absolute left-4 top-4 rounded-full bg-[#b8860b] px-3.5 py-1 text-xs font-bold text-white uppercase tracking-wider shadow-sm">
+                {product.subcategory}
+              </span>
+            </div>
+
+            {/* Gallery thumbnails */}
+            {product.gallery && product.gallery.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {product.gallery.map((img, i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-xl border border-stone-200 bg-white p-2 flex items-center justify-center overflow-hidden shadow-sm"
+                  >
+                    <img src={img} alt="Gallery" className="h-full w-full object-contain" />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Quality assurance badges under image */}
+            <div className="grid grid-cols-3 gap-3 pt-2 text-center text-xs text-stone-600">
+              <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
+                <ShieldCheck className="h-5 w-5 text-[#b8860b] mx-auto mb-1" />
+                <span className="font-bold block text-stone-900">100% Virgin</span>
+                <span>Polymer Purity</span>
+              </div>
+              <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
+                <Award className="h-5 w-5 text-[#b8860b] mx-auto mb-1" />
+                <span className="font-bold block text-stone-900">{product.warranty}</span>
+                <span>Manufacturer Cover</span>
+              </div>
+              <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
+                <Truck className="h-5 w-5 text-[#b8860b] mx-auto mb-1" />
+                <span className="font-bold block text-stone-900">Pan-India</span>
+                <span>Fast Dispatch</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Details & Order Box (6 Cols) */}
+          <div className="lg:col-span-6 flex flex-col">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#b8860b]">
+                {product.category} · {product.subcategory}
+              </span>
+              <span className="text-stone-300">·</span>
+              <div className="flex items-center text-amber-500 text-xs gap-1 font-bold">
+                <Star className="h-3.5 w-3.5 fill-current" />
+                <span>{product.rating}</span>
+                <span className="text-stone-500 font-normal">({product.reviewsCount} reviews)</span>
+              </div>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-stone-900 tracking-tight mb-4">
+              {product.title}
             </h1>
-            <p className="mt-5 border-l-2 border-industrial-steel pl-4 text-[15px] leading-relaxed text-industrial-ink">
-              {item.description}
-            </p>
-            <p className="mt-5 text-[15px] leading-[1.85] text-[#555]">
-              {detail?.body ?? item.description}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <SectionButton
-                href={`/contact?subject=${encodeURIComponent(`Enquiry for ${item.title}`)}`}
+
+            {/* Price Box */}
+            <div className="flex items-baseline gap-4 p-4 rounded-2xl bg-amber-50/70 border border-[#b8860b]/20 shadow-sm mb-6">
+              <span className="text-3xl sm:text-4xl font-extrabold text-[#b8860b]">
+                {product.price}
+              </span>
+              {product.mrp && (
+                <span className="text-base text-stone-400 line-through">
+                  MRP: {product.mrp}
+                </span>
+              )}
+              <span className="ml-auto rounded-full bg-emerald-100 border border-emerald-300 px-3 py-1 text-xs font-bold text-emerald-800">
+                Direct Factory Rate
+              </span>
+            </div>
+
+            <div className="prose prose-stone text-stone-600 text-sm leading-relaxed mb-6">
+              <p>{product.description}</p>
+            </div>
+
+            {/* Key Specification Table */}
+            <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-sm mb-8">
+              <div className="bg-stone-100/90 px-5 py-3 text-xs font-bold uppercase tracking-wider text-stone-800 border-b border-stone-200">
+                Technical Specifications & Standards
+              </div>
+              <div className="p-5 divide-y divide-stone-100 text-xs sm:text-sm">
+                {Object.entries(product.specifications).map(([k, v]) => (
+                  <div key={k} className="py-2.5 flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <span className="font-semibold text-stone-500">{k}</span>
+                    <span className="font-bold text-stone-900 sm:text-right max-w-sm">
+                      {v}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3.5 mb-8">
+              <a
+                href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 py-4 px-6 text-sm sm:text-base font-bold text-white shadow-md transition"
               >
-                Get a quote
-              </SectionButton>
+                <MessageSquare className="h-5 w-5" />
+                <span>Instant WhatsApp Inquiry</span>
+              </a>
+
               <Link
-                href={`/services?tab=${group.id}`}
-                className="text-[13px] font-medium text-industrial-ink underline-offset-4 hover:text-industrial-steel hover:underline"
+                href="/contact"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-[#b8860b] hover:bg-[#8c6506] py-4 px-8 text-sm sm:text-base font-bold text-white shadow-md transition"
               >
-                All {group.label}
+                <span>Request Quotation</span>
+                <ArrowRight className="h-5 w-5" />
               </Link>
+            </div>
+
+            {/* Contact numbers */}
+            <div className="p-4 rounded-2xl border border-stone-200 bg-white flex items-center justify-between text-xs text-stone-600 shadow-sm">
+              <div className="flex items-center gap-2 font-medium">
+                <Phone className="h-4 w-4 text-[#b8860b]" />
+                <span>Need technical assistance? Call factory sales:</span>
+              </div>
+              <a href={site.phoneHref} className="font-bold text-[#b8860b] hover:underline">
+                {site.phone}
+              </a>
             </div>
           </div>
         </div>
 
-        {specs.length > 0 ? (
-          <section className="mt-16 border-t border-[#e6e6e6] pt-10">
-            <div className="mb-8 flex items-end justify-between gap-6">
-              <h2 className="font-display text-2xl font-medium uppercase tracking-[0.04em] text-industrial-ink">
-                Specifications
-              </h2>
-              <p className="hidden text-[11px] font-medium uppercase tracking-[0.2em] text-[#9a9a9a] sm:block">
-                {String(specs.length).padStart(2, "0")} listed
-              </p>
+        {/* Related Products Carousel */}
+        {related.length > 0 && (
+          <div className="mt-20 pt-12 border-t border-stone-200">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#b8860b]">
+                  Related Recommendations
+                </span>
+                <h3 className="text-2xl font-bold text-stone-900">
+                  More in {product.category}
+                </h3>
+              </div>
+              <Link
+                href={`/products?category=${encodeURIComponent(product.category)}`}
+                className="text-xs sm:text-sm font-bold text-[#b8860b] hover:underline flex items-center gap-1"
+              >
+                View Category &rarr;
+              </Link>
             </div>
-            <dl className="border-t border-[#e6e6e6]">
-              {specs.map((spec) => (
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {related.map((rel) => (
                 <div
-                  key={spec.label}
-                  className="grid gap-1 border-b border-[#e6e6e6] py-4 sm:grid-cols-[14rem_1fr] sm:items-baseline sm:gap-8"
+                  key={rel.id}
+                  className="rounded-2xl border border-stone-200 bg-white p-4 flex flex-col hover:shadow-lg transition"
                 >
-                  <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#8a8a8a]">
-                    {spec.label}
-                  </dt>
-                  <dd className="text-[15px] leading-relaxed text-industrial-ink">
-                    {spec.value || spec.label}
-                  </dd>
+                  <div className="aspect-square bg-[#faf8f5] rounded-xl p-3 flex items-center justify-center mb-3">
+                    <img src={rel.image} alt={rel.title} className="h-full w-full object-contain" />
+                  </div>
+                  <h4 className="font-bold text-sm text-stone-900 line-clamp-1 mb-1">
+                    {rel.title}
+                  </h4>
+                  <span className="text-xs font-bold text-[#b8860b] mb-3">{rel.price}</span>
+                  <Link
+                    href={`/products/${rel.slug}`}
+                    className="mt-auto block text-center rounded-xl bg-stone-100 hover:bg-[#b8860b] hover:text-white py-2 text-xs font-bold transition"
+                  >
+                    View Model
+                  </Link>
                 </div>
               ))}
-            </dl>
-          </section>
-        ) : null}
-
-        {related.length > 0 ? (
-          <section className="mt-16 border-t border-[#e6e6e6] pt-10">
-            <h2 className="font-display text-2xl font-medium uppercase tracking-[0.04em] text-industrial-ink">
-              More in {group.label}
-            </h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-3">
-              {related.map((entry) => (
-                <Link
-                  key={entry.slug}
-                  href={`/products/${entry.slug}`}
-                  className="card-lift flex flex-col overflow-hidden border border-[#ececec] bg-white shadow-[0_10px_24px_rgba(23,50,61,0.05)] hover:border-industrial-steel hover:shadow-[0_18px_36px_rgba(23,50,61,0.12)]"
-                >
-                  <div className="relative aspect-[4/3] bg-industrial-soft">
-                    <Image
-                      src={entry.image}
-                      alt={entry.title}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 640px) 100vw, 30vw"
-                    />
-                  </div>
-                  <span className="block border-t border-[#ececec] px-4 py-4 font-display text-[14px] font-medium uppercase leading-snug tracking-[0.03em] text-industrial-ink">
-                    {entry.title}
-                  </span>
-                </Link>
-              ))}
             </div>
-          </section>
-        ) : null}
+          </div>
+        )}
       </div>
-    </article>
+    </div>
   );
 }

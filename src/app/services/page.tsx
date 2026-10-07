@@ -3,23 +3,16 @@ import { Suspense } from "react";
 import ProductCatalog from "@/components/ProductCatalog";
 
 export const metadata: Metadata = {
-  title: "Products",
-  description:
-    "Kredence Steel Trading — fencing panels, hoardings, mesh fence, and coated metal products including coils, sheets, purlins, and roofing.",
+  title: "Products & Collections | Atlanta Furniture",
+  description: "Browse 69+ certified models of Atlanta plastic chairs, office executive seating, student desks, and commercial dustbins.",
 };
 
 export default function ServicesPage() {
   return (
-    <>
-      <Suspense
-        fallback={
-          <div className="px-4 py-20 text-center text-sm text-[#666]">
-            Loading products…
-          </div>
-        }
-      >
-        <ProductCatalog />
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Suspense fallback={<div className="py-20 text-center text-stone-400">Loading catalog...</div>}>
+        <ProductCatalog showFilters={true} />
       </Suspense>
-    </>
+    </div>
   );
 }

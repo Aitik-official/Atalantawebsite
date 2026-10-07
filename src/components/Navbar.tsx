@@ -2,223 +2,161 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight, Download, FileText, Menu, Search, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { 
+  ChevronDown, 
+  ChevronRight, 
+  Menu, 
+  Phone, 
+  Search, 
+  X, 
+  MessageSquare, 
+  Sparkles,
+  Layers
+} from "lucide-react";
 import Logo from "./Logo";
-import { navItems, productGroups, site } from "@/data/site";
-
-type NavChild = { label: string; href: string };
-type NavItem = {
-  label: string;
-  href: string;
-  children?: readonly NavChild[];
-};
+import { navItems, site } from "@/data/site";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobileGroup, setMobileGroup] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  
   const pathname = usePathname();
-  const [pastHero, setPastHero] = useState(pathname !== "/");
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const closeMenuTimer = useRef<number | null>(null);
-  const isHome = pathname === "/";
+  const router = useRouter();
+  const navRef = useRef<HTMLElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    return () => {
-      if (closeMenuTimer.current) window.clearTimeout(closeMenuTimer.current);
-    };
+    function handleScroll() {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (!dropdownRef.current?.contains(e.target as Node)) {
-        setServicesOpen(false);
-        setOpenGroup(null);
+    setMobileOpen(false);
+    setActiveDropdown(null);
+    setSearchOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setActiveDropdown(null);
       }
     }
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    setOpen(false);
-    setServicesOpen(false);
-    setOpenGroup(null);
-    setMobileServicesOpen(false);
-    setMobileGroup(null);
-    setPastHero(pathname !== "/");
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
     }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [searchOpen]);
 
-  useEffect(() => {
-    function update() {
-      const y = window.scrollY || document.documentElement.scrollTop || 0;
-      if (pathname !== "/") {
-        setPastHero(true);
-        return;
-      }
-      setPastHero(y > (window.innerWidth < 1024 ? 180 : window.innerHeight * 0.65));
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
     }
-    update();
-    window.addEventListener("scroll", update, { passive: true, capture: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update, { capture: true });
-      window.removeEventListener("resize", update);
-    };
-  }, [pathname]);
-
-  const solidNav = !isHome || pastHero || open;
-  const linkBase = solidNav
-    ? "text-[#444] hover:text-industrial-steel"
-    : "text-white/80 hover:text-white";
-  const linkActive = solidNav ? "text-industrial-ink" : "text-white";
-
-  const headerClass = `fixed inset-x-0 top-0 ${
-    solidNav
-      ? "border-b border-[#e6e6e6] bg-white shadow-sm"
-      : "border-b border-transparent bg-transparent"
-  }`;
+  };
 
   return (
-    <>
-    <header className={`z-50 transition-colors duration-300 ${headerClass}`}>
-      <div className="relative mx-auto flex w-full max-w-[90rem] items-center gap-3 px-6 py-2 sm:gap-5 sm:px-10 lg:gap-8 lg:px-14">
-        <div className="shrink-0">
-          <Logo light={!solidNav} />
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-stone-200/90 py-2"
+          : "bg-white border-b border-stone-200 py-2.5"
+      }`}
+    >
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between px-3 sm:px-5 lg:px-6 gap-3">
+        {/* Brand Logo on the far left */}
+        <div className="flex items-center shrink-0">
+          <Logo />
         </div>
 
-        <form action="/services" method="get" className="hidden min-w-0 flex-1 md:block">
-          <label
-            className={`flex max-w-md items-center gap-2 border px-3 py-2 ${
-              solidNav
-                ? "border-[#e4e4e4] bg-industrial-soft"
-                : "border-white/25 bg-white/10"
-            }`}
-          >
-            <Search
-              className={`h-4 w-4 shrink-0 ${solidNav ? "text-[#8a8a8a]" : "text-white/70"}`}
-            />
-            <input
-              name="q"
-              type="search"
-              placeholder="Search products"
-              className={`w-full bg-transparent text-sm outline-none ${
-                solidNav
-                  ? "text-industrial-ink placeholder:text-[#9a9a9a]"
-                  : "text-white placeholder:text-white/50"
-              }`}
-            />
-          </label>
-        </form>
+        {/* Desktop Navigation - All in ONE single row */}
+        <nav ref={navRef} className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-1 justify-center shrink-0">
+          {navItems.map((item) => {
+            const children = item.children;
+            const hasChildren = Boolean(children && children.length > 0);
+            const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+            const isOpen = activeDropdown === item.label;
 
-        <nav className="ml-auto hidden items-center justify-end gap-6 xl:flex">
-          {(navItems as readonly NavItem[]).map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
-
-            if (item.children?.length) {
+            if (hasChildren && children) {
               return (
                 <div
                   key={item.label}
-                  className="relative"
-                  ref={dropdownRef}
-                  onMouseEnter={() => {
-                    if (closeMenuTimer.current) window.clearTimeout(closeMenuTimer.current);
-                    setServicesOpen(true);
-                  }}
-                  onMouseLeave={() => {
-                    closeMenuTimer.current = window.setTimeout(() => {
-                      setServicesOpen(false);
-                      setOpenGroup(null);
-                    }, 160);
-                  }}
+                  className="relative group shrink-0"
+                  onMouseEnter={() => setActiveDropdown(item.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setServicesOpen((v) => !v);
-                      setOpenGroup(null);
-                    }}
-                    className={`inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-[0.14em] transition ${
-                      active || pathname.startsWith("/services")
-                        ? linkActive
-                        : linkBase
+                  <Link
+                    href={item.href}
+                    className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-[12.5px] font-bold tracking-tight uppercase transition rounded-lg whitespace-nowrap shrink-0 ${
+                      isActive
+                        ? "text-[#b8860b] bg-amber-50/90"
+                        : "text-stone-800 hover:text-[#b8860b] hover:bg-stone-50"
                     }`}
                   >
-                    {item.label}
-                    <span className="text-[10px] opacity-70">+</span>
+                    <span className="whitespace-nowrap">{item.label}</span>
                     <ChevronDown
-                      className={`h-3.5 w-3.5 transition ${
-                        servicesOpen ? "rotate-180" : ""
+                      className={`h-3 w-3 transition-transform duration-200 text-[#b8860b] shrink-0 ${
+                        isOpen ? "rotate-180" : ""
                       }`}
                     />
-                  </button>
-                  {servicesOpen ? (
-                    <div className="absolute left-0 top-full z-50 flex items-start pt-4">
-                      <div className="w-44 border border-black/5 bg-white py-2 shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
-                        {productGroups.map((group) => {
-                          const activeGroup = openGroup === group.id;
-                          return (
-                            <button
-                              key={group.id}
-                              type="button"
-                              onMouseEnter={() => setOpenGroup(group.id)}
-                              onClick={() => setOpenGroup(group.id)}
-                              className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-[12px] font-semibold uppercase tracking-[0.14em] transition ${
-                                activeGroup
-                                  ? "bg-industrial-soft text-industrial-steel"
-                                  : "text-industrial-ink hover:bg-industrial-soft hover:text-industrial-steel"
-                              }`}
-                            >
-                              {group.label}
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {openGroup ? (
-                        <div className="ml-1 max-h-[min(70vh,420px)] w-72 overflow-y-auto border border-black/5 bg-white py-2 shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
-                          {productGroups
-                            .filter((group) => group.id === openGroup)
-                            .map((group) => (
-                              <div key={group.id}>
-                                <Link
-                                  href={`/services?tab=${group.id}`}
-                                  onClick={() => setServicesOpen(false)}
-                                  className="block px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-industrial-steel hover:bg-industrial-soft"
-                                >
-                                  All {group.label}
-                                </Link>
-                                {group.items.map((product) => (
-                                  <Link
-                                    key={product.slug}
-                                    href={`/products/${product.slug}`}
-                                    onClick={() => setServicesOpen(false)}
-                                    className="block px-4 py-2 text-[13.5px] leading-snug text-[#444] transition hover:bg-industrial-soft hover:text-industrial-steel"
-                                  >
-                                    {product.title}
-                                  </Link>
-                                ))}
-                              </div>
-                            ))}
+                  </Link>
+
+                  {/* Clean Dropdown Menu */}
+                  {isOpen && (
+                    <div className="absolute left-0 top-full pt-1.5 min-w-[260px] z-50 animate-fadeIn">
+                      <div className="rounded-xl border border-stone-200 bg-white p-2 shadow-xl backdrop-blur-xl">
+                        <div className="px-3 py-1.5 border-b border-stone-100 mb-1 flex items-center justify-between">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#b8860b]">
+                            {item.label}
+                          </span>
+                          <Link
+                            href={item.href}
+                            className="text-[10px] font-bold text-stone-500 hover:text-[#b8860b] flex items-center gap-0.5"
+                          >
+                            View All <ChevronRight className="h-3 w-3" />
+                          </Link>
                         </div>
-                      ) : null}
+
+                        <div className="flex flex-col gap-0.5">
+                          {children.map((sub) => {
+                            const isSubActive = pathname === sub.href;
+                            return (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                className={`flex items-center justify-between px-3 py-2 text-[12px] font-bold rounded-lg transition whitespace-nowrap ${
+                                  isSubActive
+                                    ? "bg-amber-50 text-[#b8860b]"
+                                    : "text-stone-700 hover:bg-[#faf8f5] hover:text-[#b8860b]"
+                                }`}
+                              >
+                                <span>{sub.label}</span>
+                                <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#b8860b] transition" />
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
-                  ) : null}
+                  )}
                 </div>
               );
             }
@@ -227,165 +165,205 @@ export default function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`text-[12px] font-bold uppercase tracking-[0.14em] transition ${
-                  active ? linkActive : linkBase
+                className={`px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-[12.5px] font-bold tracking-tight uppercase transition rounded-lg whitespace-nowrap shrink-0 ${
+                  isActive
+                    ? "text-[#b8860b] bg-amber-50/90"
+                    : "text-stone-800 hover:text-[#b8860b] hover:bg-stone-50"
                 }`}
               >
                 {item.label}
-                {item.label !== "Contact" ? (
-                  <span className="ml-1 text-[10px] opacity-70">+</span>
-                ) : null}
               </Link>
             );
           })}
         </nav>
 
-        <div className="ml-auto flex shrink-0 items-center xl:hidden">
+        {/* Right CTA Actions */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Search Toggle */}
           <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => {
-              setOpen((v) => !v);
-              setMobileServicesOpen(false);
-            }}
-            className={`flex h-10 w-10 items-center justify-center transition ${
-              solidNav
-                ? "border border-[#e6e6e6] bg-industrial-soft text-industrial-ink hover:bg-industrial-panel"
-                : "border border-white/25 bg-transparent text-white hover:bg-white/15"
-            }`}
+            onClick={() => setSearchOpen(!searchOpen)}
+            className="p-1.5 sm:p-2 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition"
+            aria-label="Search Catalog"
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Search className="h-4 w-4" />
+          </button>
+
+          {/* Quick WhatsApp CTA */}
+          <a
+            href={site.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-emerald-600/30 bg-emerald-50 px-2.5 xl:px-3 py-1.5 text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition whitespace-nowrap shrink-0"
+          >
+            <MessageSquare className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden xl:inline">WhatsApp RFQ</span>
+          </a>
+
+          {/* Contact / Inquire CTA */}
+          <Link
+            href="/contact"
+            className="hidden md:inline-flex items-center gap-1 rounded-lg bg-[#b8860b] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#8c6506] shadow-xs transition whitespace-nowrap shrink-0"
+          >
+            <span>Get Quote</span>
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden p-2 rounded-lg text-stone-700 hover:text-black hover:bg-stone-100 transition"
+            aria-label="Toggle Menu"
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {open ? (
-        <>
-          <button
-            type="button"
-            aria-label="Close menu"
-            className="fixed inset-0 z-40 bg-black/40"
-            onClick={() => setOpen(false)}
-          />
-          <div className="absolute left-3 right-3 top-full z-50 mt-2 max-h-[min(70vh,480px)] overflow-y-auto border border-black/5 bg-white px-3 py-3 shadow-[0_20px_50px_rgba(0,0,0,0.18)] sm:left-6 sm:right-6 sm:px-4 sm:py-4">
-            <form action="/services" method="get" className="mb-3 md:hidden">
-              <label className="flex items-center gap-2 border border-[#e6e6e6] px-3 py-2.5">
-                <Search className="h-4 w-4 shrink-0 text-[#8a8a8a]" />
-                <input
-                  name="q"
-                  type="search"
-                  placeholder="Search products"
-                  className="w-full bg-transparent text-sm text-industrial-ink outline-none placeholder:text-[#9a9a9a]"
-                />
-              </label>
-            </form>
-            <nav className="flex flex-col gap-0.5">
-              {(navItems as readonly NavItem[]).map((item) => {
-                if (item.children?.length) {
-                  return (
-                    <div key={item.label}>
-                      <button
-                        type="button"
-                        onClick={() => setMobileServicesOpen((v) => !v)}
-                        className="flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-[15px] font-semibold text-industrial-ink hover:bg-industrial-soft hover:text-industrial-steel"
+      {/* Expandable Light Search Bar */}
+      {searchOpen && (
+        <div className="border-t border-stone-200 bg-[#faf8f5] px-4 py-3 sm:px-6 shadow-inner">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="mx-auto flex max-w-3xl items-center gap-2"
+          >
+            <div className="relative flex-1">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search plastic chairs, director chairs, student desks, dustbins..."
+                className="w-full rounded-xl border border-stone-300 bg-white py-2 pl-10 pr-4 text-sm text-stone-900 placeholder-stone-400 focus:border-[#b8860b] focus:outline-none focus:ring-1 focus:ring-[#b8860b] shadow-xs"
+              />
+            </div>
+            <button
+              type="submit"
+              className="rounded-xl bg-[#b8860b] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#8c6506] transition shrink-0 shadow-xs"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Mobile Navigation Drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden border-t border-stone-200 bg-white px-4 pt-3 pb-6 max-h-[85vh] overflow-y-auto shadow-xl">
+          <div className="flex flex-col gap-1">
+            <Link
+              href="/"
+              className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
+                pathname === "/" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+              }`}
+            >
+              HOME
+            </Link>
+
+            {/* Mobile Categories Accordion */}
+            {navItems
+              .filter((item): item is typeof item & { children: NonNullable<typeof item.children> } => Boolean(item.children && item.children.length > 0))
+              .map((item) => {
+                const isAccordionOpen = mobileAccordion === item.label;
+                const hasSubActive = item.children.some((sub) => pathname === sub.href) || pathname === item.href;
+
+                return (
+                  <div key={item.label} className="border-b border-stone-100 py-1">
+                    <div className="flex items-center justify-between">
+                      <Link
+                        href={item.href}
+                        className={`flex-1 px-3 py-2 text-sm font-bold uppercase ${
+                          hasSubActive ? "text-[#b8860b]" : "text-stone-800"
+                        }`}
                       >
                         {item.label}
+                      </Link>
+                      <button
+                        onClick={() => setMobileAccordion(isAccordionOpen ? null : item.label)}
+                        className="p-2 text-stone-500 hover:text-[#b8860b]"
+                      >
                         <ChevronDown
-                          className={`h-4 w-4 transition ${
-                            mobileServicesOpen ? "rotate-180" : ""
+                          className={`h-4 w-4 transition-transform ${
+                            isAccordionOpen ? "rotate-180" : ""
                           }`}
                         />
                       </button>
-                      {mobileServicesOpen ? (
-                        <div className="pb-2">
-                          {productGroups.map((group) => {
-                            const groupOpen = mobileGroup === group.id;
-                            return (
-                              <div key={group.id}>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setMobileGroup(groupOpen ? null : group.id)
-                                  }
-                                  className="flex w-full items-center justify-between py-2.5 pr-3 pl-6 text-left text-[13px] font-semibold uppercase tracking-[0.12em] text-industrial-ink hover:text-industrial-steel"
-                                >
-                                  {group.label}
-                                  <ChevronDown
-                                    className={`h-4 w-4 transition ${
-                                      groupOpen ? "rotate-180" : ""
-                                    }`}
-                                  />
-                                </button>
-                                {groupOpen ? (
-                                  <div className="pb-2">
-                                    <Link
-                                      href={`/services?tab=${group.id}`}
-                                      onClick={() => setOpen(false)}
-                                      className="block py-2 pr-3 pl-9 text-[13px] text-industrial-steel"
-                                    >
-                                      All {group.label}
-                                    </Link>
-                                    {group.items.map((product) => (
-                                      <Link
-                                        key={product.slug}
-                                        href={`/products/${product.slug}`}
-                                        onClick={() => setOpen(false)}
-                                        className="block py-2 pr-3 pl-9 text-sm text-[#555] hover:text-industrial-steel"
-                                      >
-                                        {product.title}
-                                      </Link>
-                                    ))}
-                                  </div>
-                                ) : null}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : null}
                     </div>
-                  );
-                }
 
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-3 text-[15px] font-semibold text-industrial-ink hover:bg-industrial-soft hover:text-industrial-steel"
-                  >
-                    {item.label}
-                  </Link>
+                    {isAccordionOpen && (
+                      <div className="pl-4 pr-2 pb-2 flex flex-col gap-1 bg-[#faf8f5] rounded-xl my-1 p-2">
+                        <Link
+                          href={item.href}
+                          className="px-3 py-1.5 text-xs font-extrabold text-[#b8860b] uppercase hover:underline"
+                        >
+                          All {item.label} Models &rarr;
+                        </Link>
+                        {item.children.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${
+                              pathname === sub.href
+                                ? "bg-white text-[#b8860b] font-bold shadow-xs"
+                                : "text-stone-700 hover:text-[#b8860b]"
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <a
-                  href={site.brochure}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download="Kredence_Brochure.pdf"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center gap-1.5 border border-industrial-steel/40 bg-industrial-mist px-3 py-3 text-xs font-semibold text-industrial-steel-dark"
-                >
-                  <Download className="h-3.5 w-3.5 text-industrial-steel" />
-                  Brochure
-                </a>
-                <Link
-                  href="/contact"
-                  onClick={() => setOpen(false)}
-                  className="logo-grad inline-flex items-center justify-center px-3 py-3 text-xs font-semibold text-white"
-                >
-                  Get Quote
-                </Link>
-              </div>
-            </nav>
+
+            <Link
+              href="/about"
+              className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
+                pathname === "/about" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+              }`}
+            >
+              ABOUT US
+            </Link>
+
+            <Link
+              href="/testimonials"
+              className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
+                pathname === "/testimonials" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+              }`}
+            >
+              TESTIMONIAL
+            </Link>
+
+            <Link
+              href="/contact"
+              className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
+                pathname === "/contact" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+              }`}
+            >
+              CONTACT
+            </Link>
           </div>
-        </>
-      ) : null}
+
+          <div className="mt-6 pt-4 border-t border-stone-200 flex flex-col gap-2.5">
+            <a
+              href={site.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-50 border border-emerald-600/30 py-2.5 text-xs font-bold text-emerald-700"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Chat on WhatsApp ({site.phone})
+            </a>
+            <a
+              href={site.phoneHref}
+              className="flex items-center justify-center gap-2 rounded-xl bg-[#b8860b] py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              Call Directly
+            </a>
+          </div>
+        </div>
+      )}
     </header>
-    {isHome ? null : (
-      <div className="h-[calc(6rem*140/232+1rem)] sm:h-[calc(7rem*140/232+1rem)]" aria-hidden />
-    )}
-    </>
   );
 }
