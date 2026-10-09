@@ -108,7 +108,7 @@ export default function ProductCatalog({
       {showFilters && (
         <div className="mb-8 flex flex-col gap-6">
           {/* Main Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-4">
+          <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-4">
             <button
               onClick={() => {
                 setSelectedCategory("all");
@@ -116,8 +116,8 @@ export default function ProductCatalog({
               }}
               className={`rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition shadow-xs ${
                 selectedCategory === "all"
-                  ? "bg-[#b8860b] text-white shadow-sm"
-                  : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-200"
+                  ? "bg-[#0090d0] text-white shadow-sm"
+                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
               All Categories ({allProducts.length})
@@ -136,8 +136,8 @@ export default function ProductCatalog({
                   }}
                   className={`rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-xs ${
                     isCatActive
-                      ? "bg-[#b8860b] text-white shadow-sm"
-                      : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-200"
+                      ? "bg-[#0090d0] text-white shadow-sm"
+                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
                   }`}
                 >
                   <span>{cat.name}</span>
@@ -153,15 +153,15 @@ export default function ProductCatalog({
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             {availableSubcategories.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-xs font-bold uppercase tracking-wider text-stone-500 mr-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-1">
                   Subcategory:
                 </span>
                 <button
                   onClick={() => setSelectedSubcategory("all")}
                   className={`rounded-lg px-3 py-1 text-xs font-semibold transition border ${
                     selectedSubcategory === "all"
-                      ? "bg-stone-900 text-white border-stone-900"
-                      : "bg-white text-stone-700 border-stone-200 hover:bg-stone-50"
+                      ? "bg-slate-900 text-white border-slate-900"
+                      : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   All Types ({filteredProducts.length})
@@ -180,8 +180,8 @@ export default function ProductCatalog({
                       onClick={() => setSelectedSubcategory(sub)}
                       className={`rounded-lg px-3 py-1 text-xs font-semibold transition border flex items-center gap-1 ${
                         isSubActive
-                          ? "bg-[#b8860b] text-white border-[#b8860b]"
-                          : "bg-white text-stone-700 border-stone-200 hover:bg-stone-50"
+                          ? "bg-[#0090d0] text-white border-[#0090d0]"
+                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                       }`}
                     >
                       <span>{sub}</span>
@@ -195,18 +195,18 @@ export default function ProductCatalog({
             {/* Search & Sort Controls */}
             <div className="flex w-full md:w-auto items-center gap-3 ml-auto">
               <div className="relative flex-1 md:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Filter models, specs..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-stone-300 bg-white py-2 pl-9 pr-8 text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:border-[#b8860b] focus:outline-none shadow-xs"
+                  className="w-full rounded-xl border border-slate-300 bg-white py-2 pl-9 pr-8 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:border-[#0090d0] focus:outline-none shadow-xs"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -218,7 +218,7 @@ export default function ProductCatalog({
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="rounded-xl border border-stone-300 bg-white py-2 px-3 text-xs sm:text-sm text-stone-800 focus:border-[#b8860b] focus:outline-none cursor-pointer shadow-xs font-medium"
+                  className="rounded-xl border border-slate-300 bg-white py-2 px-3 text-xs sm:text-sm text-slate-800 focus:border-[#0090d0] focus:outline-none cursor-pointer shadow-xs font-medium"
                 >
                   <option value="featured">Featured Order</option>
                   <option value="price-asc">Price: Low to High</option>
@@ -231,7 +231,7 @@ export default function ProductCatalog({
 
           {/* Active Filter Indicators */}
           {(selectedCategory !== "all" || selectedSubcategory !== "all" || searchQuery) && (
-            <div className="flex items-center gap-2 text-xs text-stone-600 font-medium">
+            <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
               <span>Showing {filteredProducts.length} matching products</span>
               <button
                 onClick={() => {
@@ -239,7 +239,7 @@ export default function ProductCatalog({
                   setSelectedSubcategory("all");
                   setSearchQuery("");
                 }}
-                className="text-[#b8860b] hover:underline font-bold"
+                className="text-[#0090d0] hover:underline font-bold"
               >
                 Reset all filters
               </button>
@@ -260,14 +260,14 @@ export default function ProductCatalog({
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed border-stone-300 bg-white p-12 text-center my-10 shadow-xs">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 text-[#b8860b] mb-4 border border-[#b8860b]/20">
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center my-10 shadow-xs">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sky-50 text-[#0090d0] mb-4 border border-[#0090d0]/20">
             <Search className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold text-stone-900">
+          <h3 className="text-lg font-bold text-slate-900">
             No furniture models found matching your criteria
           </h3>
-          <p className="text-sm text-stone-500 mt-1 max-w-md mx-auto">
+          <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
             Try resetting your search query or selecting a different furniture category.
           </p>
           <button
@@ -276,7 +276,7 @@ export default function ProductCatalog({
               setSelectedSubcategory("all");
               setSearchQuery("");
             }}
-            className="mt-4 rounded-xl bg-[#b8860b] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-[#8c6506] transition shadow-xs"
+            className="mt-4 rounded-xl bg-[#0090d0] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-[#0073ab] transition shadow-xs"
           >
             Show All Products
           </button>
@@ -288,7 +288,7 @@ export default function ProductCatalog({
         <div className="mt-10 text-center">
           <button
             onClick={() => setVisibleCount((prev) => prev + 16)}
-            className="rounded-2xl border border-stone-300 bg-white px-8 py-3.5 text-sm font-bold text-stone-800 shadow-xs hover:bg-[#b8860b] hover:text-white hover:border-[#b8860b] transition duration-200"
+            className="rounded-2xl border border-slate-300 bg-white px-8 py-3.5 text-sm font-bold text-slate-800 shadow-xs hover:bg-[#0090d0] hover:text-white hover:border-[#0090d0] transition duration-200"
           >
             Load More Products ({filteredProducts.length - visibleCount} remaining)
           </button>

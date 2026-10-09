@@ -258,7 +258,7 @@ export const categoriesData = [
     count: "17+ Models",
     description: "Molded from 100% virgin polypropylene. Weather-proof, stackable, and ergonomic chairs & tables.",
     image: "https://atlantaworld.in/admin/products/17164641970.png",
-    accent: "from-amber-600/20 to-amber-900/40",
+    accent: "from-sky-600/20 to-blue-900/40",
     badge: "100% Virgin Polymer",
     popularItems: ["CRYSTAL", "ARIZONA", "BANDHAN 01", "ROYAL 02", "CORAL BABY CHAIR"],
   },

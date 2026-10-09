@@ -167,7 +167,7 @@ export default function HomeCategoryShowcases() {
 
               <Link
                 href="/office-furniture"
-                className="inline-flex items-center gap-2 rounded-2xl bg-stone-900 hover:bg-[#b8860b] text-white px-6 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-sm shrink-0"
+                className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 hover:bg-[#0090d0] text-white px-6 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-sm shrink-0"
               >
                 <span>View All 14+ Models</span>
                 <ArrowRight className="h-4 w-4" />
@@ -183,33 +183,33 @@ export default function HomeCategoryShowcases() {
                 <div
                   onMouseEnter={() => setIsOfficeHovered(true)}
                   onMouseLeave={() => setIsOfficeHovered(false)}
-                  className="relative h-full flex flex-col justify-between rounded-3xl bg-gradient-to-br from-blue-500/10 via-white to-amber-100/30 p-6 sm:p-8 border border-stone-200/90 shadow-lg overflow-hidden group transition-all"
+                  className="relative h-full flex flex-col justify-between rounded-3xl bg-gradient-to-br from-blue-500/10 via-white to-sky-100/30 p-6 sm:p-8 border border-slate-200 shadow-lg overflow-hidden group transition-all"
                 >
                   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-300/20 rounded-full blur-3xl pointer-events-none" />
 
                   {/* Top Badge & Live Indicator */}
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3 min-h-[26px]">
-                      <span className="rounded-full bg-stone-900 text-amber-300 text-[11px] font-extrabold px-3 py-1 uppercase tracking-wider shadow-sm transition-all truncate">
+                      <span className="rounded-full bg-slate-900 text-sky-300 text-[11px] font-extrabold px-3 py-1 uppercase tracking-wider shadow-sm transition-all truncate">
                         {activeOfficeSpotlight.badge}
                       </span>
                       <div className="flex items-center gap-2 shrink-0">
                         <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-xs font-bold text-stone-600">
+                        <span className="text-xs font-bold text-slate-600">
                           {activeOfficeSpotlight.spec}
                         </span>
                       </div>
                     </div>
 
                     <div className="h-[64px] flex items-center">
-                      <h3 className="text-2xl font-extrabold text-stone-900 leading-tight transition-all line-clamp-2">
+                      <h3 className="text-2xl font-extrabold text-slate-900 leading-tight transition-all line-clamp-2">
                         {activeOfficeSpotlight.title}
                       </h3>
                     </div>
                   </div>
 
                   {/* Center Clean Cutout Image with Smooth Fade Animation */}
-                  <div className="relative aspect-square w-full rounded-2xl bg-[#faf8f5] p-4 flex items-center justify-center my-5 shadow-sm border border-stone-100 group-hover:scale-105 transition-transform duration-500">
+                  <div className="relative aspect-square w-full rounded-2xl bg-slate-50 p-4 flex items-center justify-center my-5 shadow-sm border border-slate-100 group-hover:scale-105 transition-transform duration-500">
                     <img
                       key={activeOfficeSpotlight.image}
                       src={activeOfficeSpotlight.image}
@@ -231,28 +231,28 @@ export default function HomeCategoryShowcases() {
                           onClick={() => setOfficeSpotlightIndex(dotIdx)}
                           className={`h-2 rounded-full transition-all duration-300 ${
                             officeSpotlightIndex === dotIdx
-                              ? "w-7 bg-[#b8860b]"
-                              : "w-2 bg-stone-300 hover:bg-stone-400"
+                              ? "w-7 bg-[#0090d0]"
+                              : "w-2 bg-slate-300 hover:bg-slate-400"
                           }`}
                           aria-label={`Go to spotlight ${dotIdx + 1}`}
                         />
                       ))}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-xs text-stone-700 font-semibold mb-5 pt-3 border-t border-stone-200">
+                    <div className="grid grid-cols-2 gap-2 text-xs text-slate-700 font-semibold mb-5 pt-3 border-t border-slate-200">
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#b8860b]" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#0090d0]" />
                         <span>{activeOfficeSpotlight.f1}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#b8860b]" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#0090d0]" />
                         <span>{activeOfficeSpotlight.f2}</span>
                       </div>
                     </div>
 
                     <Link
                       href={activeOfficeSpotlight.link}
-                      className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#b8860b] hover:bg-[#8c6506] text-white py-3.5 px-4 text-xs font-bold uppercase tracking-wider transition shadow-md"
+                      className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#0090d0] hover:bg-[#0073ab] text-white py-3.5 px-4 text-xs font-bold uppercase tracking-wider transition shadow-md"
                     >
                       <span>{activeOfficeSpotlight.cta}</span>
                       <ArrowRight className="h-4 w-4" />
@@ -269,30 +269,30 @@ export default function HomeCategoryShowcases() {
               onMouseLeave={() => setIsCarouselHovered(false)}
             >
               {/* Top Header & Carousel Navigation Controls */}
-              <div className="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-stone-200/80">
+              <div className="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#b8860b] animate-pulse" />
-                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-stone-900">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#0090d0] animate-pulse" />
+                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-900">
                     Office Chairs & Storage Models ({officeProducts.length})
                   </span>
                 </div>
 
                 {/* Prev / Next 1-by-1 Switcher Controls */}
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xs font-bold text-stone-500 mr-1">
+                  <span className="text-xs font-bold text-slate-500 mr-1">
                     {officeProducts.length > 0 ? `${officeCarouselIndex + 1} / ${officeProducts.length}` : "0 / 0"}
                   </span>
                   <button
                     onClick={handlePrevOffice}
                     aria-label="Previous chair"
-                    className="h-9 w-9 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-700 hover:bg-[#b8860b] hover:text-white transition shadow-xs"
+                    className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-[#0090d0] hover:text-white transition shadow-xs"
                   >
                     ←
                   </button>
                   <button
                     onClick={handleNextOffice}
                     aria-label="Next chair"
-                    className="h-9 w-9 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-700 hover:bg-[#b8860b] hover:text-white transition shadow-xs"
+                    className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-[#0090d0] hover:text-white transition shadow-xs"
                   >
                     →
                   </button>
@@ -322,7 +322,7 @@ export default function HomeCategoryShowcases() {
               </div>
 
               {/* Bottom live indicator */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-stone-200/60 text-xs text-stone-500 font-medium">
+              <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-200 text-xs text-slate-500 font-medium">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span>Moving one-by-one in a loop · Auto-rotates every 3.5s (Hover to Pause)</span>
@@ -334,8 +334,8 @@ export default function HomeCategoryShowcases() {
                       onClick={() => setOfficeCarouselIndex(dotIdx)}
                       className={`h-1.5 rounded-full transition-all duration-300 ${
                         officeCarouselIndex === dotIdx
-                          ? "w-5 bg-[#b8860b]"
-                          : "w-1.5 bg-stone-300 hover:bg-stone-400"
+                          ? "w-5 bg-[#0090d0]"
+                          : "w-1.5 bg-slate-300 hover:bg-slate-400"
                       }`}
                       aria-label={`Slide to chair ${dotIdx + 1}`}
                     />

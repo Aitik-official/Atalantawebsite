@@ -38,17 +38,17 @@ export default function CertificatesPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-[#0f1115] text-stone-900 dark:text-white">
-      <section className="relative py-20 lg:py-24 bg-[#121418] text-white border-b border-white/10 overflow-hidden">
+      <section className="relative py-20 lg:py-24 bg-[#0f172a] text-white border-b border-slate-800 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#c59b27]/15 border border-[#c59b27]/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#e6b83b] mb-4">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0090d0]/20 border border-[#0090d0]/40 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#0090d0] mb-4">
               <ShieldCheck className="h-3.5 w-3.5" />
               Compliance & Manufacturing Codes
             </span>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6">
-              Quality Certifications & <span className="gold-gradient-text">Standards</span>
+              Quality Certifications & <span className="brand-gradient-text">Standards</span>
             </h1>
-            <p className="text-stone-300 text-base sm:text-lg leading-relaxed">
+            <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
               Every Atlanta Furniture unit is engineered and tested in compliance with established national and international safety, durability, and raw material standards.
             </p>
           </div>
@@ -60,33 +60,33 @@ export default function CertificatesPage() {
           {certifications.map((c, i) => (
             <div
               key={i}
-              className="rounded-3xl border border-stone-200 dark:border-white/10 bg-white dark:bg-[#161920] p-8 flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-[#c59b27]/40 transition duration-300"
+              className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161920] p-8 flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-[#0090d0]/40 transition duration-300"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="rounded-full bg-[#c59b27]/15 text-[#c59b27] px-3 py-1 text-xs font-bold uppercase">
+                  <span className="rounded-full bg-sky-50 text-[#0090d0] border border-[#0090d0]/30 px-3 py-1 text-xs font-bold uppercase">
                     {c.tag}
                   </span>
-                  <Award className="h-6 w-6 text-[#c59b27]" />
+                  <Award className="h-6 w-6 text-[#0090d0]" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                   {c.title}
                 </h3>
-                <p className="text-xs font-semibold text-[#c59b27] mb-4">
+                <p className="text-xs font-semibold text-[#0090d0] mb-4">
                   Issued By: {c.issuer}
                 </p>
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                   {c.desc}
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-stone-100 dark:border-white/10 mt-6 flex items-center justify-between">
+              <div className="pt-6 border-t border-slate-100 dark:border-white/10 mt-6 flex items-center justify-between">
                 <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="h-4 w-4" /> Full Compliance Verified
                 </span>
                 <Link
                   href="/contact"
-                  className="text-xs font-bold text-[#c59b27] hover:underline"
+                  className="text-xs font-bold text-[#0090d0] hover:underline"
                 >
                   Request Dossier &rarr;
                 </Link>

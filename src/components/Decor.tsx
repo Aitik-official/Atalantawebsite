@@ -16,7 +16,7 @@ export function PlusGrid({
   return (
     <div
       aria-hidden
-      className={`pointer-events-none grid gap-x-[6px] gap-y-[2px] text-ems-cyan ${className}`}
+      className={`pointer-events-none grid gap-x-[6px] gap-y-[2px] text-[#0090d0] ${className}`}
       style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
     >
       {Array.from({ length: count }).map((_, i) => (
@@ -45,7 +45,7 @@ export function PlusScatter({ className = "" }: PlusScatterProps) {
       {Array.from({ length: 16 }).map((_, i) => (
         <span
           key={i}
-          className="flex h-3 w-3 items-center justify-center text-[10px] font-bold leading-none text-ems-cyan"
+          className="flex h-3 w-3 items-center justify-center text-[10px] font-bold leading-none text-[#0090d0]"
           style={{ opacity: 0.25 + (i % 4) * 0.12 }}
         >
           +
@@ -70,7 +70,7 @@ export function AccentBars({ className = "" }: AccentBarsProps) {
       {heights.map((h, i) => (
         <span
           key={i}
-          className="w-[3px] rounded-full bg-gradient-to-t from-ems-blue via-ems-cyan to-ems-green"
+          className="w-[3px] rounded-full bg-gradient-to-t from-[#0090d0] via-[#0284c7] to-[#e31e24]"
           style={{ height: h, opacity: 0.35 + (i % 3) * 0.15 }}
         />
       ))}
@@ -91,7 +91,7 @@ export function RedDots({ className = "" }: RedDotsProps) {
       {Array.from({ length: 10 }).map((_, i) => (
         <span
           key={i}
-          className="h-1.5 w-1.5 rounded-full bg-finbiz-red"
+          className="h-1.5 w-1.5 rounded-full bg-[#e31e24]"
           style={{
             opacity: i > 6 ? 0.35 : 1,
             visibility: i === 3 || i === 7 ? "hidden" : "visible",

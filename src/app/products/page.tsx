@@ -15,14 +15,14 @@ export default function ProductsPage() {
       <section className="relative py-16 lg:py-20 bg-[#faf8f5] text-stone-900 border-b border-stone-200 overflow-hidden">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-[#b8860b]/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#8c6506] mb-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 border border-[#0090d0]/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#0090d0] mb-4">
               <Layers className="h-3.5 w-3.5" />
               Complete Manufacturer Catalog
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-stone-900 mb-4">
-              Explore Certified <span className="gold-gradient-text">Furniture Collections</span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+              Explore Certified <span className="brand-gradient-text">Furniture Collections</span>
             </h1>
-            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
               Precision molded from 100% virgin polypropylene and heavy-gauge powder-coated CRCA steel. Filter by category, subcategory, or search individual model specifications.
             </p>
           </div>

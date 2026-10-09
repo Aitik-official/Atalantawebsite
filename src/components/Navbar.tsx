@@ -77,8 +77,8 @@ export default function Navbar() {
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-stone-200/90 py-2"
-          : "bg-white border-b border-stone-200 py-2.5"
+          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200 py-2"
+          : "bg-white border-b border-slate-200 py-2.5"
       }`}
     >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between px-3 sm:px-5 lg:px-6 gap-3">
@@ -107,13 +107,13 @@ export default function Navbar() {
                     href={item.href}
                     className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-[12.5px] font-bold tracking-tight uppercase transition rounded-lg whitespace-nowrap shrink-0 ${
                       isActive
-                        ? "text-[#b8860b] bg-amber-50/90"
-                        : "text-stone-800 hover:text-[#b8860b] hover:bg-stone-50"
+                        ? "text-[#0090d0] bg-sky-50 font-extrabold"
+                        : "text-slate-800 hover:text-[#0090d0] hover:bg-sky-50/60"
                     }`}
                   >
                     <span className="whitespace-nowrap">{item.label}</span>
                     <ChevronDown
-                      className={`h-3 w-3 transition-transform duration-200 text-[#b8860b] shrink-0 ${
+                      className={`h-3 w-3 transition-transform duration-200 text-[#0090d0] shrink-0 ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     />
@@ -122,14 +122,14 @@ export default function Navbar() {
                   {/* Clean Dropdown Menu */}
                   {isOpen && (
                     <div className="absolute left-0 top-full pt-1.5 min-w-[260px] z-50 animate-fadeIn">
-                      <div className="rounded-xl border border-stone-200 bg-white p-2 shadow-xl backdrop-blur-xl">
-                        <div className="px-3 py-1.5 border-b border-stone-100 mb-1 flex items-center justify-between">
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#b8860b]">
+                      <div className="rounded-xl border border-slate-200 bg-white p-2 shadow-xl backdrop-blur-xl">
+                        <div className="px-3 py-1.5 border-b border-slate-100 mb-1 flex items-center justify-between">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0090d0]">
                             {item.label}
                           </span>
                           <Link
                             href={item.href}
-                            className="text-[10px] font-bold text-stone-500 hover:text-[#b8860b] flex items-center gap-0.5"
+                            className="text-[10px] font-bold text-slate-500 hover:text-[#e31e24] flex items-center gap-0.5"
                           >
                             View All <ChevronRight className="h-3 w-3" />
                           </Link>
@@ -144,12 +144,12 @@ export default function Navbar() {
                                 href={sub.href}
                                 className={`flex items-center justify-between px-3 py-2 text-[12px] font-bold rounded-lg transition whitespace-nowrap ${
                                   isSubActive
-                                    ? "bg-amber-50 text-[#b8860b]"
-                                    : "text-stone-700 hover:bg-[#faf8f5] hover:text-[#b8860b]"
+                                    ? "bg-sky-50 text-[#0090d0]"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-[#0090d0]"
                                 }`}
                               >
                                 <span>{sub.label}</span>
-                                <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#b8860b] transition" />
+                                <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 text-[#e31e24] transition" />
                               </Link>
                             );
                           })}
@@ -167,8 +167,8 @@ export default function Navbar() {
                 href={item.href}
                 className={`px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-[12.5px] font-bold tracking-tight uppercase transition rounded-lg whitespace-nowrap shrink-0 ${
                   isActive
-                    ? "text-[#b8860b] bg-amber-50/90"
-                    : "text-stone-800 hover:text-[#b8860b] hover:bg-stone-50"
+                    ? "text-[#0090d0] bg-sky-50 font-extrabold"
+                    : "text-slate-800 hover:text-[#0090d0] hover:bg-sky-50/60"
                 }`}
               >
                 {item.label}
@@ -182,7 +182,7 @@ export default function Navbar() {
           {/* Search Toggle */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="p-1.5 sm:p-2 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition"
+            className="p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
             aria-label="Search Catalog"
           >
             <Search className="h-4 w-4" />
@@ -202,7 +202,7 @@ export default function Navbar() {
           {/* Contact / Inquire CTA */}
           <Link
             href="/contact"
-            className="hidden md:inline-flex items-center gap-1 rounded-lg bg-[#b8860b] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#8c6506] shadow-xs transition whitespace-nowrap shrink-0"
+            className="hidden md:inline-flex items-center gap-1 rounded-lg bg-[#0090d0] hover:bg-[#0073ab] px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs transition whitespace-nowrap shrink-0"
           >
             <span>Get Quote</span>
           </Link>
@@ -210,7 +210,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-lg text-stone-700 hover:text-black hover:bg-stone-100 transition"
+            className="lg:hidden p-2 rounded-lg text-slate-700 hover:text-black hover:bg-slate-100 transition"
             aria-label="Toggle Menu"
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -220,25 +220,25 @@ export default function Navbar() {
 
       {/* Expandable Light Search Bar */}
       {searchOpen && (
-        <div className="border-t border-stone-200 bg-[#faf8f5] px-4 py-3 sm:px-6 shadow-inner">
+        <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 shadow-inner">
           <form
             onSubmit={handleSearchSubmit}
             className="mx-auto flex max-w-3xl items-center gap-2"
           >
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search plastic chairs, director chairs, student desks, dustbins..."
-                className="w-full rounded-xl border border-stone-300 bg-white py-2 pl-10 pr-4 text-sm text-stone-900 placeholder-stone-400 focus:border-[#b8860b] focus:outline-none focus:ring-1 focus:ring-[#b8860b] shadow-xs"
+                className="w-full rounded-xl border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 focus:border-[#0090d0] focus:outline-none focus:ring-1 focus:ring-[#0090d0] shadow-xs"
               />
             </div>
             <button
               type="submit"
-              className="rounded-xl bg-[#b8860b] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#8c6506] transition shrink-0 shadow-xs"
+              className="rounded-xl bg-[#0090d0] hover:bg-[#0073ab] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white transition shrink-0 shadow-xs"
             >
               Search
             </button>
@@ -248,12 +248,12 @@ export default function Navbar() {
 
       {/* Mobile Navigation Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-stone-200 bg-white px-4 pt-3 pb-6 max-h-[85vh] overflow-y-auto shadow-xl">
+        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 max-h-[85vh] overflow-y-auto shadow-xl">
           <div className="flex flex-col gap-1">
             <Link
               href="/"
               className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
-                pathname === "/" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+                pathname === "/" ? "bg-sky-50 text-[#0090d0]" : "text-slate-800 hover:bg-slate-50"
               }`}
             >
               HOME
@@ -267,19 +267,19 @@ export default function Navbar() {
                 const hasSubActive = item.children.some((sub) => pathname === sub.href) || pathname === item.href;
 
                 return (
-                  <div key={item.label} className="border-b border-stone-100 py-1">
+                  <div key={item.label} className="border-b border-slate-100 py-1">
                     <div className="flex items-center justify-between">
                       <Link
                         href={item.href}
                         className={`flex-1 px-3 py-2 text-sm font-bold uppercase ${
-                          hasSubActive ? "text-[#b8860b]" : "text-stone-800"
+                          hasSubActive ? "text-[#0090d0]" : "text-slate-800"
                         }`}
                       >
                         {item.label}
                       </Link>
                       <button
                         onClick={() => setMobileAccordion(isAccordionOpen ? null : item.label)}
-                        className="p-2 text-stone-500 hover:text-[#b8860b]"
+                        className="p-2 text-slate-500 hover:text-[#0090d0]"
                       >
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
@@ -290,10 +290,10 @@ export default function Navbar() {
                     </div>
 
                     {isAccordionOpen && (
-                      <div className="pl-4 pr-2 pb-2 flex flex-col gap-1 bg-[#faf8f5] rounded-xl my-1 p-2">
+                      <div className="pl-4 pr-2 pb-2 flex flex-col gap-1 bg-slate-50 rounded-xl my-1 p-2">
                         <Link
                           href={item.href}
-                          className="px-3 py-1.5 text-xs font-extrabold text-[#b8860b] uppercase hover:underline"
+                          className="px-3 py-1.5 text-xs font-extrabold text-[#0090d0] uppercase hover:underline"
                         >
                           All {item.label} Models &rarr;
                         </Link>
@@ -303,8 +303,8 @@ export default function Navbar() {
                             href={sub.href}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${
                               pathname === sub.href
-                                ? "bg-white text-[#b8860b] font-bold shadow-xs"
-                                : "text-stone-700 hover:text-[#b8860b]"
+                                ? "bg-white text-[#0090d0] font-bold shadow-xs"
+                                : "text-slate-700 hover:text-[#0090d0]"
                             }`}
                           >
                             {sub.label}
@@ -319,7 +319,7 @@ export default function Navbar() {
             <Link
               href="/about"
               className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
-                pathname === "/about" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+                pathname === "/about" ? "bg-sky-50 text-[#0090d0]" : "text-slate-800 hover:bg-slate-50"
               }`}
             >
               ABOUT US
@@ -328,7 +328,7 @@ export default function Navbar() {
             <Link
               href="/testimonials"
               className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
-                pathname === "/testimonials" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+                pathname === "/testimonials" ? "bg-sky-50 text-[#0090d0]" : "text-slate-800 hover:bg-slate-50"
               }`}
             >
               TESTIMONIAL
@@ -337,14 +337,14 @@ export default function Navbar() {
             <Link
               href="/contact"
               className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
-                pathname === "/contact" ? "bg-amber-50 text-[#b8860b]" : "text-stone-800 hover:bg-stone-50"
+                pathname === "/contact" ? "bg-sky-50 text-[#0090d0]" : "text-slate-800 hover:bg-slate-50"
               }`}
             >
               CONTACT
             </Link>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-stone-200 flex flex-col gap-2.5">
+          <div className="mt-6 pt-4 border-t border-slate-200 flex flex-col gap-2.5">
             <a
               href={site.whatsapp}
               target="_blank"
@@ -356,7 +356,7 @@ export default function Navbar() {
             </a>
             <a
               href={site.phoneHref}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#b8860b] py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs"
+              className="flex items-center justify-center gap-2 rounded-xl bg-[#0090d0] hover:bg-[#0073ab] py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs"
             >
               <Phone className="h-3.5 w-3.5" />
               Call Directly

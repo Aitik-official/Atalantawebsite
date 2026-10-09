@@ -24,13 +24,13 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-fadeIn">
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-stone-200 bg-white p-6 sm:p-8 text-stone-900 shadow-2xl"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 text-slate-900 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-10 rounded-full bg-stone-100 p-2 text-stone-500 hover:bg-stone-200 hover:text-stone-900 transition"
+          className="absolute right-4 top-4 z-10 rounded-full bg-slate-100 p-2 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition"
           aria-label="Close modal"
         >
           <X className="h-5 w-5" />
@@ -39,7 +39,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left: Product Images */}
           <div className="flex flex-col gap-3">
-            <div className="relative aspect-square w-full rounded-2xl bg-[#faf8f5] border border-stone-200 p-4 flex items-center justify-center overflow-hidden">
+            <div className="relative aspect-square w-full rounded-2xl bg-slate-50 border border-slate-200 p-4 flex items-center justify-center overflow-hidden">
               <img
                 src={currentImg}
                 alt={product.title}
@@ -49,7 +49,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
                     "https://atlantaworld.in/admin/products/17164641970.png";
                 }}
               />
-              <span className="absolute left-3 top-3 rounded-full bg-[#b8860b] px-3 py-1 text-[11px] font-bold text-white uppercase tracking-wider shadow-sm">
+              <span className="absolute left-3 top-3 rounded-full bg-[#0090d0] px-3 py-1 text-[11px] font-bold text-white uppercase tracking-wider shadow-sm">
                 {product.subcategory}
               </span>
             </div>
@@ -61,8 +61,8 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
                   <button
                     key={i}
                     onClick={() => setSelectedImage(img)}
-                    className={`h-16 w-16 shrink-0 rounded-lg border bg-[#faf8f5] p-1 transition overflow-hidden ${
-                      currentImg === img ? "border-[#b8860b]" : "border-stone-200 opacity-70 hover:opacity-100"
+                    className={`h-16 w-16 shrink-0 rounded-lg border bg-slate-50 p-1 transition overflow-hidden ${
+                      currentImg === img ? "border-[#0090d0]" : "border-slate-200 opacity-70 hover:opacity-100"
                     }`}
                   >
                     <img src={img} alt="Thumbnail" className="h-full w-full object-contain" />
@@ -75,28 +75,28 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
           {/* Right: Product Details & Order Actions */}
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#b8860b]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#0090d0]">
                 {product.category}
               </span>
-              <span className="text-stone-300">·</span>
+              <span className="text-slate-300">·</span>
               <div className="flex items-center text-amber-500 text-xs gap-1">
                 <Star className="h-3.5 w-3.5 fill-current" />
                 <span className="font-bold">{product.rating}</span>
-                <span className="text-stone-500 font-normal">({product.reviewsCount} reviews)</span>
+                <span className="text-slate-500 font-normal">({product.reviewsCount} reviews)</span>
               </div>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 mb-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
               {product.title}
             </h2>
 
             {/* Pricing Box */}
-            <div className="flex items-baseline gap-3 my-3 p-3.5 rounded-xl bg-amber-50/60 border border-[#b8860b]/20">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#b8860b]">
+            <div className="flex items-baseline gap-3 my-3 p-3.5 rounded-xl bg-sky-50/60 border border-[#0090d0]/20">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#0090d0]">
                 {product.price}
               </span>
               {product.mrp && (
-                <span className="text-sm text-stone-400 line-through">
+                <span className="text-sm text-slate-400 line-through">
                   MRP: {product.mrp}
                 </span>
               )}
@@ -105,35 +105,35 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
               </span>
             </div>
 
-            <p className="text-stone-600 text-sm leading-relaxed mb-4">
+            <p className="text-slate-600 text-sm leading-relaxed mb-4">
               {product.description}
             </p>
 
             {/* Specifications Quick View */}
-            <div className="rounded-xl border border-stone-200 bg-[#faf8f5] p-3.5 mb-5 space-y-2 text-xs">
-              <div className="flex justify-between border-b border-stone-200/60 pb-1.5">
-                <span className="text-stone-500 font-medium">Material</span>
-                <span className="font-bold text-stone-800 text-right">{product.material}</span>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 mb-5 space-y-2 text-xs">
+              <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
+                <span className="text-slate-500 font-medium">Material</span>
+                <span className="font-bold text-slate-800 text-right">{product.material}</span>
               </div>
-              <div className="flex justify-between border-b border-stone-200/60 pb-1.5">
-                <span className="text-stone-500 font-medium">Warranty</span>
+              <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
+                <span className="text-slate-500 font-medium">Warranty</span>
                 <span className="font-bold text-emerald-700">{product.warranty}</span>
               </div>
               <div className="flex justify-between pb-0.5">
-                <span className="text-stone-500 font-medium">Manufactured By</span>
-                <span className="font-bold text-stone-800">{site.name} (Made in India)</span>
+                <span className="text-slate-500 font-medium">Manufactured By</span>
+                <span className="font-bold text-slate-800">{site.name} (Made in India)</span>
               </div>
             </div>
 
             {/* Quantity Selector */}
             <div className="flex items-center gap-3 mb-5">
-              <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                 Quantity (Units):
               </label>
-              <div className="flex items-center rounded-lg border border-stone-300 bg-white px-2 shadow-sm">
+              <div className="flex items-center rounded-lg border border-slate-300 bg-white px-2 shadow-sm">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 5))}
-                  className="px-2 py-1 text-stone-600 hover:text-black font-bold"
+                  className="px-2 py-1 text-slate-600 hover:text-black font-bold"
                 >
                   -
                 </button>
@@ -142,11 +142,11 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
                   min="1"
                   value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-14 bg-transparent text-center text-sm font-bold text-stone-900 focus:outline-none"
+                  className="w-14 bg-transparent text-center text-sm font-bold text-slate-900 focus:outline-none"
                 />
                 <button
                   onClick={() => setQuantity(quantity + 5)}
-                  className="px-2 py-1 text-stone-600 hover:text-black font-bold"
+                  className="px-2 py-1 text-slate-600 hover:text-black font-bold"
                 >
                   +
                 </button>
@@ -168,7 +168,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
               <Link
                 href={`/products/${product.slug}`}
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#b8860b] hover:bg-[#8c6506] py-3 px-5 text-sm font-bold text-white transition shadow-md"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#e31e24] hover:bg-[#c5161b] py-3 px-5 text-sm font-bold text-white transition shadow-md"
               >
                 Full Details <ArrowRight className="h-4 w-4" />
               </Link>

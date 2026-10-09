@@ -31,19 +31,19 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#faf8f5] text-stone-900 border-y border-stone-200/80 relative">
+    <section className="py-20 lg:py-28 bg-slate-50 text-slate-900 border-y border-slate-200 relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <Reveal variant="up" delay={50}>
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-[#b8860b]/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#8c6506] mb-3">
-              <Award className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 border border-[#0090d0]/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#0090d0] mb-3">
+              <Award className="h-3.5 w-3.5 text-[#e31e24]" />
               The Atlanta Standard
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-stone-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
               Why Architects & Institutions <span className="gold-gradient-text">Trust Atlanta</span>
             </h2>
-            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
               From precision injection molds to ISO 9001 certified QA laboratories, Atlanta Furniture sets the benchmark in structural endurance, aesthetic refinement, and cost efficiency.
             </p>
           </div>
@@ -55,14 +55,14 @@ export default function WhyChooseUs() {
             const Icon = item.icon;
             return (
               <Reveal key={idx} variant="up" delay={idx * 100}>
-                <div className="h-full rounded-3xl border border-stone-200/90 bg-white p-7 flex flex-col hover:border-[#b8860b]/50 hover:shadow-2xl transition duration-500 hover:-translate-y-2 shadow-sm">
-                  <div className="h-12 w-12 rounded-2xl bg-amber-50 border border-[#b8860b]/30 flex items-center justify-center text-[#b8860b] mb-5">
+                <div className="h-full rounded-3xl border border-slate-200 bg-white p-7 flex flex-col hover:border-[#0090d0]/50 hover:shadow-2xl transition duration-500 hover:-translate-y-2 shadow-sm">
+                  <div className="h-12 w-12 rounded-2xl bg-sky-50 border border-[#0090d0]/30 flex items-center justify-center text-[#0090d0] mb-5">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-stone-900 mb-2.5">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2.5">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -73,14 +73,14 @@ export default function WhyChooseUs() {
 
         {/* Dynamic Numerical Stats Banner */}
         <Reveal variant="scale" delay={200}>
-          <div className="rounded-3xl border border-[#b8860b]/30 bg-gradient-to-r from-amber-50 via-white to-amber-50 p-8 sm:p-12 shadow-lg">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
+          <div className="rounded-3xl border border-[#0090d0]/30 bg-gradient-to-r from-sky-50 via-white to-rose-50 p-8 sm:p-12 shadow-lg">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
               {stats.map((stat, i) => (
                 <div key={i} className={`pt-4 lg:pt-0 ${i !== 0 ? "lg:pl-8" : ""}`}>
-                  <div className="text-3xl sm:text-5xl font-extrabold text-[#b8860b] mb-1 font-display">
+                  <div className="text-3xl sm:text-5xl font-extrabold text-[#0090d0] mb-1 font-display">
                     {stat.value}
                   </div>
-                  <div className="text-xs sm:text-sm text-stone-700 font-semibold">
+                  <div className="text-xs sm:text-sm text-slate-700 font-semibold">
                     {stat.label}
                   </div>
                 </div>

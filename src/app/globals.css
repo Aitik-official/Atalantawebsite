@@ -1,38 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  /* Atlanta World Luxury Light Theme Palette */
-  --atlanta-gold: #b8860b;
-  --atlanta-gold-light: #d4a017;
-  --atlanta-gold-dark: #8c6506;
-  --atlanta-amber: #d97706;
+  /* Atlanta World Logo Brand Theme Palette */
+  --atlanta-blue: #0090d0;
+  --atlanta-blue-light: #00a6e8;
+  --atlanta-blue-dark: #0073ab;
+  --atlanta-blue-subtle: #f0f9ff;
   
-  --atlanta-dark: #1e2024;
-  --atlanta-dark-soft: #2d3139;
+  --atlanta-red: #e31e24;
+  --atlanta-red-light: #f8454b;
+  --atlanta-red-dark: #c5161b;
+  --atlanta-red-subtle: #fef2f2;
   
-  --atlanta-cream: #faf8f5;
-  --atlanta-cream-soft: #f4ede2;
-  --atlanta-line: #e8e3d8;
+  /* Backward-compatible aliases */
+  --atlanta-gold: #0090d0;
+  --atlanta-gold-light: #00a6e8;
+  --atlanta-gold-dark: #0073ab;
+  --atlanta-amber: #e31e24;
+  
+  --atlanta-dark: #0f172a;
+  --atlanta-dark-soft: #1e293b;
+  
+  --atlanta-cream: #f8fafc;
+  --atlanta-cream-soft: #f1f5f9;
+  --atlanta-line: #e2e8f0;
   --atlanta-muted: #64748b;
 
   /* Theme mappings */
   --background: #ffffff;
-  --foreground: #1c1e22;
+  --foreground: #0f172a;
 
-  --finbiz-red: #b8860b;
-  --finbiz-red-dark: #8c6506;
-  --finbiz-navy: #1e2024;
-  --finbiz-navy-soft: #2d3139;
+  --finbiz-red: #e31e24;
+  --finbiz-red-dark: #c5161b;
+  --finbiz-navy: #0090d0;
+  --finbiz-navy-soft: #0073ab;
   --finbiz-gray: #64748b;
-  --finbiz-muted: #faf8f5;
+  --finbiz-muted: #f8fafc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-atlanta-gold: var(--atlanta-gold);
-  --color-atlanta-gold-light: var(--atlanta-gold-light);
-  --color-atlanta-gold-dark: var(--atlanta-gold-dark);
+  --color-atlanta-blue: var(--atlanta-blue);
+  --color-atlanta-blue-light: var(--atlanta-blue-light);
+  --color-atlanta-blue-dark: var(--atlanta-blue-dark);
+  --color-atlanta-blue-subtle: var(--atlanta-blue-subtle);
+  --color-atlanta-red: var(--atlanta-red);
+  --color-atlanta-red-light: var(--atlanta-red-light);
+  --color-atlanta-red-dark: var(--atlanta-red-dark);
+  --color-atlanta-red-subtle: var(--atlanta-red-subtle);
+  
+  --color-atlanta-gold: var(--atlanta-blue);
+  --color-atlanta-gold-light: var(--atlanta-blue-light);
+  --color-atlanta-gold-dark: var(--atlanta-blue-dark);
   --color-atlanta-cream: var(--atlanta-cream);
   --color-atlanta-cream-soft: var(--atlanta-cream-soft);
   
@@ -59,33 +79,48 @@ html {
 }
 
 body {
-  background-color: #faf9f6;
-  color: #1e2229;
+  background-color: #f8fafc;
+  color: #0f172a;
   font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
 /* Glassmorphism & custom utility styles */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.9);
 }
 
-.gold-gradient-text {
-  background: linear-gradient(135deg, #b8860b 0%, #d4a017 50%, #8c6506 100%);
+.gold-gradient-text,
+.brand-gradient-text {
+  background: linear-gradient(135deg, #0090d0 0%, #0284c7 40%, #e31e24 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gold-gradient-bg {
-  background: linear-gradient(135deg, #b8860b 0%, #c59b27 50%, #9a7617 100%);
+.gold-gradient-bg,
+.brand-gradient-bg,
+.logo-grad {
+  background: linear-gradient(135deg, #0090d0 0%, #007eb8 60%, #e31e24 100%);
   color: #ffffff;
 }
 
-.gold-gradient-bg:hover {
-  background: linear-gradient(135deg, #c59b27 0%, #d4a017 50%, #a87f12 100%);
+.gold-gradient-bg:hover,
+.brand-gradient-bg:hover,
+.logo-grad:hover {
+  background: linear-gradient(135deg, #0080bc 0%, #006da2 60%, #c5161b 100%);
+}
+
+.blue-gradient-bg {
+  background: linear-gradient(135deg, #0090d0 0%, #0284c7 100%);
+  color: #ffffff;
+}
+
+.red-gradient-bg {
+  background: linear-gradient(135deg, #e31e24 0%, #dc2626 100%);
+  color: #ffffff;
 }
 
 /* Custom scrollbars */
@@ -95,16 +130,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4ede2;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c59b27;
+  background: #0090d0;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9a7617;
+  background: #0073ab;
 }
 
 /* Scroll Reveal Animations */
@@ -151,8 +186,8 @@ body {
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 15px rgba(184, 134, 11, 0.25); }
-  50% { box-shadow: 0 0 28px rgba(184, 134, 11, 0.5); }
+  0%, 100% { box-shadow: 0 0 15px rgba(0, 144, 208, 0.3); }
+  50% { box-shadow: 0 0 28px rgba(227, 30, 36, 0.4); }
 }
 
 .pulse-glow {
@@ -165,7 +200,7 @@ body {
 }
 
 .shimmer-btn {
-  background: linear-gradient(90deg, #b8860b 0%, #ecd078 50%, #b8860b 100%);
+  background: linear-gradient(90deg, #0090d0 0%, #e31e24 50%, #0090d0 100%);
   background-size: 200% 100%;
   animation: shine 3.5s infinite linear;
 }

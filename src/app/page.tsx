@@ -10,7 +10,7 @@ import { site } from "@/data/site";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#faf9f6] text-stone-900">
+    <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900">
       {/* 1. Luxury Hero Section */}
       <Hero />
 
@@ -30,25 +30,25 @@ export default function Home() {
       <ClientReviews />
 
       {/* 8. Bottom Direct Factory CTA */}
-      <section className="py-16 bg-[#faf8f5] text-stone-900 border-t border-stone-200 relative overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-[#b8860b]/40 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#8c6506] mb-4">
-            <Factory className="h-4 w-4" />
+      <section className="py-16 bg-slate-50 text-slate-900 border-t border-slate-200 relative overflow-hidden">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
+          <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 border border-[#0090d0]/40 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0090d0] mb-4">
+            <Factory className="h-4 w-4 text-[#e31e24]" />
             Direct Factory Sourcing
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-stone-900 mb-5 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
             Ready to Furnish Your Campus, Office, or Commercial Facility?
           </h2>
 
-          <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8 max-w-2xl mx-auto">
             Get instant factory quotations, custom polymer color matching, and volume discounts delivered right to your inbox or WhatsApp.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-2xl bg-[#b8860b] px-8 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#8c6506] transition"
+              className="inline-flex items-center gap-2 rounded-2xl bg-[#0090d0] hover:bg-[#0073ab] px-8 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition"
             >
               <span>Request Instant Quotation</span>
               <ArrowRight className="h-4 w-4" />

@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
 } from "lucide-react";
 import { site, hero } from "@/data/site";
 import Reveal from "./Reveal";
@@ -250,8 +249,8 @@ export default function Hero() {
         ))}
 
         {/* Refined soft luxury overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/75 via-stone-950/45 to-stone-950/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/65 via-transparent to-stone-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-slate-950/40" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
@@ -260,12 +259,12 @@ export default function Hero() {
           <div className="lg:col-span-7 flex flex-col justify-center">
             {/* Eyebrow badge */}
             <Reveal variant="up" delay={50}>
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/15 px-4 py-1.5 backdrop-blur-md mb-5 shadow-lg shadow-amber-950/20">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#0090d0]/50 bg-[#0090d0]/15 px-4 py-1.5 backdrop-blur-md mb-5 shadow-lg shadow-sky-950/20">
                 <Sparkles
-                  className="h-3.5 w-3.5 text-amber-400 animate-spin"
+                  className="h-3.5 w-3.5 text-[#0090d0] animate-spin"
                   style={{ animationDuration: "8s" }}
                 />
-                <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
+                <span className="text-xs font-bold uppercase tracking-widest text-sky-300">
                   {hero.eyebrow}
                 </span>
               </div>
@@ -275,7 +274,7 @@ export default function Hero() {
             <Reveal variant="up" delay={150}>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white mb-5 drop-shadow-md">
                 {activeCategory.title}{" "}
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#0090d0] via-sky-300 to-[#e31e24]">
                   {activeCategory.highlight}
                 </span>
               </h1>
@@ -283,7 +282,7 @@ export default function Hero() {
 
             {/* Subtitle */}
             <Reveal variant="up" delay={250}>
-              <p className="text-base sm:text-lg text-stone-200 leading-relaxed mb-8 max-w-xl font-normal drop-shadow">
+              <p className="text-base sm:text-lg text-slate-200 leading-relaxed mb-8 max-w-xl font-normal drop-shadow">
                 {activeCategory.subtitle}
               </p>
             </Reveal>
@@ -293,7 +292,7 @@ export default function Hero() {
               <div className="flex flex-wrap items-center gap-4 mb-8">
                 <Link
                   href={activeSubcategory.href}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#b8860b] px-7 py-4 text-sm sm:text-base font-bold uppercase tracking-wider text-white shadow-xl shadow-amber-950/40 hover:bg-[#a07408] hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-[#0090d0] px-7 py-4 text-sm sm:text-base font-bold uppercase tracking-wider text-white shadow-xl shadow-sky-950/40 hover:bg-[#0073ab] hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <span>Explore {activeSubcategory.name}</span>
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -313,17 +312,17 @@ export default function Hero() {
 
             {/* Key trust badges */}
             <Reveal variant="up" delay={450}>
-              <div className="grid grid-cols-3 gap-3 pt-6 border-t border-white/15 text-xs sm:text-sm text-stone-200 font-semibold">
+              <div className="grid grid-cols-3 gap-3 pt-6 border-t border-white/15 text-xs sm:text-sm text-slate-200 font-semibold">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0090d0] shrink-0" />
                   <span>100% Virgin Polymer</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#e31e24] shrink-0" />
                   <span>ISO 9001:2015</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-amber-400 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0090d0] shrink-0" />
                   <span>Pan-India Supply</span>
                 </div>
               </div>
@@ -333,23 +332,23 @@ export default function Hero() {
           {/* Right Visual Floating Showcase Card (5 Cols) */}
           <div className="lg:col-span-5 relative">
             <Reveal variant="scale" delay={200}>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-stone-900/90 backdrop-blur-2xl p-5 group transition-all">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-slate-900/90 backdrop-blur-2xl p-5 group transition-all">
                 {/* Header: Category Name + [View All] Link */}
                 <div className="flex items-center justify-between gap-2 mb-3 pb-2 border-b border-white/10">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-extrabold text-amber-300 uppercase tracking-wider">
+                    <span className="text-xs sm:text-sm font-extrabold text-sky-300 uppercase tracking-wider">
                       {activeCategory.categoryName}
                     </span>
                     <Link
                       href={activeCategory.categoryLink}
-                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 underline underline-offset-2 ml-1"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-[#e31e24] hover:text-red-400 underline underline-offset-2 ml-1"
                     >
                       View All &rarr;
                     </Link>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span className="text-xs font-extrabold text-stone-400">
+                    <span className="inline-block h-2 w-2 rounded-full bg-[#0090d0] animate-ping" />
+                    <span className="text-xs font-extrabold text-slate-400">
                       0{currentSlide + 1} / 0{heroCategories.length}
                     </span>
                   </div>
@@ -364,8 +363,8 @@ export default function Hero() {
                       onMouseEnter={() => setActiveSubIndex(sIdx)}
                       className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-all ${
                         activeSubIndex === sIdx
-                          ? "bg-amber-400 text-stone-900 shadow-sm font-extrabold scale-105"
-                          : "bg-white/10 text-stone-300 hover:bg-white/20 hover:text-white border border-white/10"
+                          ? "bg-[#0090d0] text-white shadow-sm font-extrabold scale-105"
+                          : "bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white border border-white/10"
                       }`}
                     >
                       {sub.name}
@@ -389,20 +388,20 @@ export default function Hero() {
                 {/* Spotlight Info Card */}
                 <div className="flex items-center justify-between gap-3 pt-1">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#0090d0] block">
                       {activeSubcategory.name}
                     </span>
                     <h4 className="text-sm sm:text-base font-extrabold text-white line-clamp-1">
                       {activeSubcategory.productTitle}
                     </h4>
-                    <span className="text-xs text-stone-300 font-medium">
+                    <span className="text-xs text-slate-300 font-medium">
                       {activeSubcategory.price}
                     </span>
                   </div>
 
                   <Link
                     href={activeSubcategory.href}
-                    className="rounded-xl bg-[#b8860b] hover:bg-[#a07408] text-white px-4 py-2 text-xs font-bold transition shrink-0 shadow-lg hover:shadow-amber-500/20"
+                    className="rounded-xl bg-[#e31e24] hover:bg-[#c5161b] text-white px-4 py-2 text-xs font-bold transition shrink-0 shadow-lg"
                   >
                     View Models &rarr;
                   </Link>
@@ -416,7 +415,7 @@ export default function Hero() {
                         heroCategories.length
                     )
                   }
-                  className="absolute left-2 top-[48%] -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-black/70 backdrop-blur-md text-white hover:bg-[#b8860b] shadow-lg flex items-center justify-center transition hover:scale-110 border border-white/20"
+                  className="absolute left-2 top-[48%] -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-black/70 backdrop-blur-md text-white hover:bg-[#0090d0] shadow-lg flex items-center justify-center transition hover:scale-110 border border-white/20"
                   aria-label="Previous slide"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -427,7 +426,7 @@ export default function Hero() {
                       (currentSlide + 1) % heroCategories.length
                     )
                   }
-                  className="absolute right-2 top-[48%] -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-black/70 backdrop-blur-md text-white hover:bg-[#b8860b] shadow-lg flex items-center justify-center transition hover:scale-110 border border-white/20"
+                  className="absolute right-2 top-[48%] -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-black/70 backdrop-blur-md text-white hover:bg-[#0090d0] shadow-lg flex items-center justify-center transition hover:scale-110 border border-white/20"
                   aria-label="Next slide"
                 >
                   <ChevronRight className="h-4 w-4" />
