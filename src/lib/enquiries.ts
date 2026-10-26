@@ -1,13 +1,18 @@
 import { randomUUID } from "crypto";
 import type { Enquiry, EnquiryStatus } from "./catalog-types";
+import { readFallbackEnquiries } from "./json-store";
 import { ensureMongoSeeded } from "./mongo-seed";
-import { getCollection, stripMongoId } from "./mongodb";
+import { describeMongoError, getCollection, stripMongoId } from "./mongodb";
 
 type EnquiryDoc = Enquiry;
 
 async function enquiriesCol() {
-  await ensureMongoSeeded();
   return getCollection<EnquiryDoc>("enquiries");
+}
+
+async function enquiriesColReady() {
+  await ensureMongoSeeded();
+  return enquiriesCol();
 }
 
 function toEnquiry(doc: EnquiryDoc): Enquiry {
@@ -15,15 +20,25 @@ function toEnquiry(doc: EnquiryDoc): Enquiry {
 }
 
 export async function getEnquiries() {
-  const col = await enquiriesCol();
-  const docs = await col.find({}).sort({ createdAt: -1 }).toArray();
-  return docs.map(toEnquiry);
+  try {
+    const col = await enquiriesCol();
+    let docs = await col.find({}).sort({ createdAt: -1 }).toArray();
+    if (docs.length === 0) {
+      await ensureMongoSeeded();
+      docs = await col.find({}).sort({ createdAt: -1 }).toArray();
+    }
+    if (docs.length === 0) return readFallbackEnquiries();
+    return docs.map(toEnquiry);
+  } catch (error) {
+    console.error("[enquiries] getEnquiries failed:", describeMongoError(error));
+    return readFallbackEnquiries();
+  }
 }
 
 export async function createEnquiry(
   input: Omit<Enquiry, "id" | "status" | "createdAt"> & { status?: EnquiryStatus },
 ) {
-  const col = await enquiriesCol();
+  const col = await enquiriesColReady();
   const enquiry: EnquiryDoc = {
     id: randomUUID(),
     name: input.name.trim(),
@@ -42,7 +57,7 @@ export async function createEnquiry(
 }
 
 export async function updateEnquiryStatus(id: string, status: EnquiryStatus) {
-  const col = await enquiriesCol();
+  const col = await enquiriesColReady();
   const result = await col.findOneAndUpdate(
     { id },
     { $set: { status } },
@@ -52,7 +67,7 @@ export async function updateEnquiryStatus(id: string, status: EnquiryStatus) {
 }
 
 export async function deleteEnquiry(id: string) {
-  const col = await enquiriesCol();
+  const col = await enquiriesColReady();
   const result = await col.deleteOne({ id });
   return result.deletedCount > 0;
 }

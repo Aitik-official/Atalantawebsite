@@ -84,6 +84,23 @@ const emptyCategoryForm = (): CategoryFormState => ({
   subcategories: [{ name: "", desc: "" }],
 });
 
+async function parseJsonResponse(response: Response) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as {
+      ok?: boolean;
+      error?: string;
+      products?: ProductItem[];
+      categories?: StoredCategory[];
+      enquiries?: Enquiry[];
+    };
+  } catch {
+    throw new Error(
+      `Could not load admin data (${response.status}). Set MONGODB_URI on the host and allow 0.0.0.0/0 in Atlas Network Access.`,
+    );
+  }
+}
+
 const navItems = [
   ["overview", "Overview", LayoutDashboard],
   ["products", "Products", Package],
@@ -131,19 +148,26 @@ export default function AdminDashboard() {
         fetch("/api/catalog"),
         fetch("/api/admin/enquiries"),
       ]);
-      const catalog = await catalogRes.json();
-      const enquiryData = await enquiryRes.json();
+      const catalog = await parseJsonResponse(catalogRes);
+      const enquiryData = await parseJsonResponse(enquiryRes);
+      const messages: string[] = [];
       if (catalog?.ok) {
-        setProducts(catalog.products || []);
-        setCategories(catalog.categories || []);
+        setProducts((catalog.products as ProductItem[]) || []);
+        setCategories((catalog.categories as StoredCategory[]) || []);
+      } else {
+        messages.push(String(catalog?.error || "Could not load catalog."));
       }
       if (enquiryData?.ok) {
-        setEnquiries(enquiryData.enquiries || []);
+        setEnquiries((enquiryData.enquiries as Enquiry[]) || []);
       } else if (enquiryRes.status === 401) {
         setAuthed(false);
+        return;
+      } else {
+        messages.push(String(enquiryData?.error || "Could not load enquiries."));
       }
-    } catch {
-      setError("Could not load admin data.");
+      if (messages.length) setError(messages.join(" "));
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Could not load admin data.");
     } finally {
       setLoading(false);
     }

@@ -9,8 +9,13 @@ export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
     return NextResponse.json({ ok: false, error: "Sign in required." }, { status: 401 });
   }
-  const categories = await getCategories();
-  return NextResponse.json({ ok: true, categories });
+  try {
+    const categories = await getCategories();
+    return NextResponse.json({ ok: true, categories });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not load categories.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {

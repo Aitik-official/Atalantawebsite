@@ -35,9 +35,14 @@ export async function DELETE(request: Request, context: Context) {
   }
 
   const { id } = await context.params;
-  const result = await deleteCategory(decodeURIComponent(id));
-  if (!result.ok) {
-    return NextResponse.json({ ok: false, error: result.error }, { status: 400 });
+  try {
+    const result = await deleteCategory(decodeURIComponent(id));
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error }, { status: 400 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not delete category.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
-  return NextResponse.json({ ok: true });
 }

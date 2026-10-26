@@ -43,3 +43,15 @@ export function isAdminRequest(request: Request) {
   const token = decodeURIComponent(pair.slice(COOKIE.length + 1));
   return verifyAdminToken(token);
 }
+
+export function adminCookieOptions(request?: Request) {
+  const forwarded = request?.headers.get("x-forwarded-proto") ?? "";
+  const secure = forwarded.includes("https") || Boolean(request?.url.startsWith("https:"));
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+    secure,
+  };
+}

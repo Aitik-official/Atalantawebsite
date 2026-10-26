@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { adminCookieName, DASHBOARD_PASSWORD, signAdminToken } from "@/lib/admin-auth";
+import {
+  adminCookieName,
+  adminCookieOptions,
+  DASHBOARD_PASSWORD,
+  signAdminToken,
+} from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   let body: { password?: string } = {};
@@ -13,11 +18,6 @@ export async function POST(request: Request) {
   }
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(adminCookieName(), signAdminToken(), {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  response.cookies.set(adminCookieName(), signAdminToken(), adminCookieOptions(request));
   return response;
 }

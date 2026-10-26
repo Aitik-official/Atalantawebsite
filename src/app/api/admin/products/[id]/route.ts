@@ -38,9 +38,14 @@ export async function DELETE(request: Request, context: Context) {
   }
 
   const { id } = await context.params;
-  const removed = await deleteProduct(decodeURIComponent(id));
-  if (!removed) {
-    return NextResponse.json({ ok: false, error: "Product not found." }, { status: 404 });
+  try {
+    const removed = await deleteProduct(decodeURIComponent(id));
+    if (!removed) {
+      return NextResponse.json({ ok: false, error: "Product not found." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not delete product.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
-  return NextResponse.json({ ok: true });
 }

@@ -15,16 +15,21 @@ export async function PATCH(request: Request, context: Context) {
   }
 
   const { id } = await context.params;
-  const body = (await request.json()) as { status?: EnquiryStatus };
-  if (!body.status || !statuses.includes(body.status)) {
-    return NextResponse.json({ ok: false, error: "Invalid status." }, { status: 400 });
-  }
+  try {
+    const body = (await request.json()) as { status?: EnquiryStatus };
+    if (!body.status || !statuses.includes(body.status)) {
+      return NextResponse.json({ ok: false, error: "Invalid status." }, { status: 400 });
+    }
 
-  const enquiry = await updateEnquiryStatus(decodeURIComponent(id), body.status);
-  if (!enquiry) {
-    return NextResponse.json({ ok: false, error: "Enquiry not found." }, { status: 404 });
+    const enquiry = await updateEnquiryStatus(decodeURIComponent(id), body.status);
+    if (!enquiry) {
+      return NextResponse.json({ ok: false, error: "Enquiry not found." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true, enquiry });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not update enquiry.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, enquiry });
 }
 
 export async function DELETE(request: Request, context: Context) {
@@ -33,9 +38,14 @@ export async function DELETE(request: Request, context: Context) {
   }
 
   const { id } = await context.params;
-  const removed = await deleteEnquiry(decodeURIComponent(id));
-  if (!removed) {
-    return NextResponse.json({ ok: false, error: "Enquiry not found." }, { status: 404 });
+  try {
+    const removed = await deleteEnquiry(decodeURIComponent(id));
+    if (!removed) {
+      return NextResponse.json({ ok: false, error: "Enquiry not found." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not delete enquiry.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
-  return NextResponse.json({ ok: true });
 }

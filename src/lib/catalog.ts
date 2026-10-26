@@ -12,21 +12,30 @@ import type {
   ProductItem,
   StoredCategory,
 } from "./catalog-types";
+import { readFallbackCategories, readFallbackProducts } from "./json-store";
 import { ensureMongoSeeded } from "./mongo-seed";
-import { getCollection, stripMongoId } from "./mongodb";
+import { describeMongoError, getCollection, stripMongoId } from "./mongodb";
 import { normalizeProductColors } from "./product-colors";
 
 type ProductDoc = ProductItem & { createdAt: string };
 type CategoryDoc = StoredCategory & { createdAt: string };
 
 async function productsCol() {
-  await ensureMongoSeeded();
   return getCollection<ProductDoc>("products");
 }
 
 async function categoriesCol() {
-  await ensureMongoSeeded();
   return getCollection<CategoryDoc>("categories");
+}
+
+async function productsColReady() {
+  await ensureMongoSeeded();
+  return productsCol();
+}
+
+async function categoriesColReady() {
+  await ensureMongoSeeded();
+  return categoriesCol();
 }
 
 function displayPrice(value?: string, fallback = 0) {
@@ -50,19 +59,39 @@ function toCategory(doc: CategoryDoc): StoredCategory {
 }
 
 export async function getProducts(): Promise<ProductItem[]> {
-  const col = await productsCol();
-  const docs = await col.find({}).sort({ createdAt: -1 }).toArray();
-  return docs.map(toProduct);
+  try {
+    const col = await productsCol();
+    let docs = await col.find({}).sort({ createdAt: -1 }).toArray();
+    if (docs.length === 0) {
+      await ensureMongoSeeded();
+      docs = await col.find({}).sort({ createdAt: -1 }).toArray();
+    }
+    if (docs.length === 0) return readFallbackProducts();
+    return docs.map(toProduct);
+  } catch (error) {
+    console.error("[catalog] getProducts failed:", describeMongoError(error));
+    return readFallbackProducts();
+  }
 }
 
 export async function getCategories(): Promise<StoredCategory[]> {
-  const col = await categoriesCol();
-  const docs = await col.find({}).sort({ createdAt: 1 }).toArray();
-  return docs.map(toCategory);
+  try {
+    const col = await categoriesCol();
+    let docs = await col.find({}).sort({ createdAt: 1 }).toArray();
+    if (docs.length === 0) {
+      await ensureMongoSeeded();
+      docs = await col.find({}).sort({ createdAt: 1 }).toArray();
+    }
+    if (docs.length === 0) return readFallbackCategories();
+    return docs.map(toCategory);
+  } catch (error) {
+    console.error("[catalog] getCategories failed:", describeMongoError(error));
+    return readFallbackCategories();
+  }
 }
 
 export async function createProduct(input: ProductInput) {
-  const col = await productsCol();
+  const col = await productsColReady();
   const title = input.title.trim();
   if (!title) throw new Error("Product title is required.");
   const category = input.category.trim();
@@ -106,7 +135,7 @@ export async function createProduct(input: ProductInput) {
 }
 
 export async function updateProduct(id: string, input: ProductInput) {
-  const col = await productsCol();
+  const col = await productsColReady();
   const current = await col.findOne({ $or: [{ id }, { slug: id }] });
   if (!current) return null;
 
@@ -146,13 +175,13 @@ export async function updateProduct(id: string, input: ProductInput) {
 }
 
 export async function deleteProduct(id: string) {
-  const col = await productsCol();
+  const col = await productsColReady();
   const result = await col.deleteOne({ $or: [{ id }, { slug: id }] });
   return result.deletedCount > 0;
 }
 
 export async function createCategory(input: CategoryInput) {
-  const col = await categoriesCol();
+  const col = await categoriesColReady();
   const name = input.name.trim();
   if (!name) throw new Error("Category name is required.");
 
@@ -183,7 +212,7 @@ export async function createCategory(input: CategoryInput) {
 }
 
 export async function updateCategory(id: string, input: CategoryInput) {
-  const col = await categoriesCol();
+  const col = await categoriesColReady();
   const current = await col.findOne({ $or: [{ id }, { slug: id }] });
   if (!current) return null;
 
@@ -207,7 +236,7 @@ export async function updateCategory(id: string, input: CategoryInput) {
 }
 
 export async function deleteCategory(id: string) {
-  const categories = await categoriesCol();
+  const categories = await categoriesColReady();
   const target = await categories.findOne({ $or: [{ id }, { slug: id }] });
   if (!target) return { ok: false as const, error: "Category not found." };
 
