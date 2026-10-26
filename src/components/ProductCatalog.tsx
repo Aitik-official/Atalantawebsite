@@ -3,9 +3,10 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
-import { ProductItem, products as allProducts, categoriesData } from "@/data/site";
+import { ProductItem } from "@/data/site";
 import ProductCard from "./ProductCard";
 import ProductQuickViewModal from "./ProductQuickViewModal";
+import { useCatalog } from "./CatalogProvider";
 
 interface CatalogProps {
   initialCategory?: string;
@@ -18,6 +19,7 @@ export default function ProductCatalog({
   limit,
   showFilters = true,
 }: CatalogProps) {
+  const { products: allProducts, categories } = useCatalog();
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category") || initialCategory;
   const searchParam = searchParams.get("search") || "";
@@ -57,7 +59,7 @@ export default function ProductCatalog({
     }
     const subs = Array.from(new Set(filtered.map((p) => p.subcategory).filter(Boolean)));
     return subs;
-  }, [selectedCategory]);
+  }, [selectedCategory, allProducts]);
 
   const filteredProducts = useMemo(() => {
     let result = [...allProducts];
@@ -99,7 +101,7 @@ export default function ProductCatalog({
     }
 
     return result;
-  }, [selectedCategory, selectedSubcategory, searchQuery, sortBy]);
+  }, [selectedCategory, selectedSubcategory, searchQuery, sortBy, allProducts]);
 
   const displayedProducts = limit ? filteredProducts.slice(0, visibleCount) : filteredProducts;
 
@@ -123,15 +125,15 @@ export default function ProductCatalog({
               All Categories ({allProducts.length})
             </button>
 
-            {categoriesData.map((cat) => {
-              const isCatActive = normalizeCat(selectedCategory) === normalizeCat(cat.slug);
-              const catCount = allProducts.filter((p) => normalizeCat(p.category) === normalizeCat(cat.slug)).length;
+            {categories.map((cat) => {
+              const isCatActive = normalizeCat(selectedCategory) === normalizeCat(cat.categoryKey);
+              const catCount = allProducts.filter((p) => normalizeCat(p.category) === normalizeCat(cat.categoryKey)).length;
 
               return (
                 <button
                   key={cat.id}
                   onClick={() => {
-                    setSelectedCategory(cat.slug);
+                    setSelectedCategory(cat.categoryKey);
                     setSelectedSubcategory("all");
                   }}
                   className={`rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-xs ${
@@ -140,7 +142,7 @@ export default function ProductCatalog({
                       : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
                   }`}
                 >
-                  <span>{cat.name}</span>
+                  <span>{cat.shortName || cat.name}</span>
                   <span className="text-[11px] opacity-80 font-normal">
                     ({catCount})
                   </span>

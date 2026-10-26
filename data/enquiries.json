@@ -1,0 +1,14 @@
+[
+  {
+    "id": "f5be711f-cc46-43c7-8ed6-4b6709cd8cc4",
+    "name": "Ramesh Kumar",
+    "email": "ramesh@school.edu.in",
+    "phone": "9820012345",
+    "category": "Plastic Furniture",
+    "quantity": "50",
+    "organization": "Global High School",
+    "message": "Need 80 student benches for classrooms.",
+    "status": "new",
+    "createdAt": "2026-10-26T10:11:13.048Z"
+  }
+]

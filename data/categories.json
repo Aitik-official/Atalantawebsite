@@ -1,0 +1,194 @@
+[
+  {
+    "id": "plastic-furniture",
+    "name": "Plastic Furniture",
+    "navLabel": "PLASTIC FURNITURE",
+    "shortName": "Plastic Furniture",
+    "slug": "plastic-furniture",
+    "href": "/plastic-furniture",
+    "categoryKey": "Plastic Furniture",
+    "description": "Molded from 100% virgin polypropylene. Weather-proof, stackable, and ergonomic chairs & tables.",
+    "image": "https://atlantaworld.in/admin/products/17164641970.png",
+    "badge": "100% Virgin Polymer",
+    "subcategories": [
+      {
+        "id": "plastic-furniture--plastic-chairs",
+        "name": "Plastic Chairs",
+        "slug": "plastic-chairs",
+        "filterKey": "Plastic Chairs",
+        "href": "/plastic-furniture/plastic-chairs",
+        "desc": "High-grade molded armless & arm-rest virgin polypropylene chairs."
+      },
+      {
+        "id": "plastic-furniture--dining-tables",
+        "name": "Dining Tables",
+        "slug": "dining-tables",
+        "filterKey": "Dining Tables",
+        "href": "/plastic-furniture/dining-tables",
+        "desc": "Heavy-duty 4-seater & 6-seater banquet and cafeteria polymer tables."
+      },
+      {
+        "id": "plastic-furniture--stools",
+        "name": "Stools",
+        "slug": "stools",
+        "filterKey": "Stools",
+        "href": "/plastic-furniture/stools",
+        "desc": "Rhino step stools, Deo round stools, and Duke utility stools."
+      },
+      {
+        "id": "plastic-furniture--party-halls",
+        "name": "Party Halls",
+        "slug": "party-halls",
+        "filterKey": "Party Halls",
+        "href": "/plastic-furniture/party-halls",
+        "desc": "Stackable banquet seating, lawn and event venue polymer series."
+      }
+    ]
+  },
+  {
+    "id": "office-furniture",
+    "name": "Office Furniture",
+    "navLabel": "OFFICE FURNITURE",
+    "shortName": "Office Furniture",
+    "slug": "office-furniture",
+    "href": "/office-furniture",
+    "categoryKey": "Office Furniture",
+    "description": "High-back director chairs, synchro-tilt executive mesh chairs, and heavy-duty visitor seating.",
+    "image": "https://atlantaworld.in/admin/products/17161205220.jpg",
+    "badge": "Ergonomic Lumbar Support",
+    "subcategories": [
+      {
+        "id": "office-furniture--wardrobes",
+        "name": "Wardrobes",
+        "slug": "wardrobes",
+        "filterKey": "Wardrobes",
+        "href": "/office-furniture/wardrobes",
+        "desc": "Executive CRCA steel lockers, almirahs, and file storage cupboards."
+      },
+      {
+        "id": "office-furniture--director-chair",
+        "name": "Director Chair",
+        "slug": "director-chair",
+        "filterKey": "Director Chairs",
+        "href": "/office-furniture/director-chair",
+        "desc": "Luxury high-back ergonomic leatherette & mesh director thrones."
+      },
+      {
+        "id": "office-furniture--executive-chairs",
+        "name": "Executive Chairs",
+        "slug": "executive-chairs",
+        "filterKey": "Executive Chairs",
+        "href": "/office-furniture/executive-chairs",
+        "desc": "Synchro-tilt mid-back breathable mesh ergonomic task chairs."
+      },
+      {
+        "id": "office-furniture--visitor-chairs",
+        "name": "Visitor Chairs",
+        "slug": "visitor-chairs",
+        "filterKey": "Visitor Chairs",
+        "href": "/office-furniture/visitor-chairs",
+        "desc": "Heavy-gauge cantilever and 4-leg guest conference chairs."
+      },
+      {
+        "id": "office-furniture--student-desk",
+        "name": "Student Desk",
+        "slug": "student-desk",
+        "filterKey": "Student Desks",
+        "href": "/office-furniture/student-desk",
+        "desc": "Ergonomic study desks with integrated book baskets."
+      }
+    ]
+  },
+  {
+    "id": "office-institutional",
+    "name": "Office & Institutional",
+    "navLabel": "OFFICE & INSTITUTIONAL",
+    "shortName": "Office & Institutional",
+    "slug": "office-institutional",
+    "href": "/office-institutional",
+    "categoryKey": "Institutional Furniture",
+    "description": "Heavy-gauge CRCA powder-coated dual student benches, computer tables, hostel beds, and lockers.",
+    "image": "https://atlantaworld.in/admin/products/17188714390.jpg",
+    "badge": "Schools & IT Labs",
+    "subcategories": [
+      {
+        "id": "office-institutional--student-benches",
+        "name": "Student Benches",
+        "slug": "student-benches",
+        "filterKey": "Student Benches",
+        "href": "/office-institutional/student-benches",
+        "desc": "Heavy-duty dual-seater CRCA powder-coated school classroom benches."
+      },
+      {
+        "id": "office-institutional--computer-table",
+        "name": "Computer Table",
+        "slug": "computer-table",
+        "filterKey": "Computer Tables",
+        "href": "/office-institutional/computer-table",
+        "desc": "IT lab workstations with keyboard trays and CPU storage compartments."
+      },
+      {
+        "id": "office-institutional--student-desk",
+        "name": "Student Desk",
+        "slug": "student-desk",
+        "filterKey": "Student Desks",
+        "href": "/office-institutional/student-desk",
+        "desc": "Single and dual student desks with durable post-formed tops."
+      },
+      {
+        "id": "office-institutional--office-desk",
+        "name": "Office Desk",
+        "slug": "office-desk",
+        "filterKey": "Office Desks",
+        "href": "/office-institutional/office-desk",
+        "desc": "Italia, Glare, Impression, and Swiss corporate executive desks."
+      },
+      {
+        "id": "office-institutional--visitor-chair",
+        "name": "Visitor Chair",
+        "slug": "visitor-chair",
+        "filterKey": "Institutional Visitor Chairs",
+        "href": "/office-institutional/visitor-chair",
+        "desc": "Conference and airport-style multi-seater waiting area tandem chairs."
+      },
+      {
+        "id": "office-institutional--storage",
+        "name": "Storage",
+        "slug": "storage",
+        "filterKey": "Lockers & Storage Units",
+        "href": "/office-institutional/storage",
+        "desc": "Personal lockers (12/15/18 doors), library and pigeon-hole cupboards."
+      },
+      {
+        "id": "office-institutional--hostel-beds",
+        "name": "Hostel Beds",
+        "slug": "hostel-beds",
+        "filterKey": "Hostel Beds",
+        "href": "/office-institutional/hostel-beds",
+        "desc": "Heavy steel single and bunk dual-deck hostel beds with safety rails."
+      }
+    ]
+  },
+  {
+    "id": "waste-management",
+    "name": "Waste Management",
+    "navLabel": "WASTE MANGEMENT",
+    "shortName": "Waste Management",
+    "slug": "waste-management",
+    "href": "/waste-management",
+    "categoryKey": "Waste Management",
+    "description": "UV-stabilized HDPE heavy duty mobile waste bins with rubber wheels (100L, 120L, 240L).",
+    "image": "https://atlantaworld.in/admin/products/17172400200.jpg",
+    "badge": "Commercial Grade HDPE",
+    "subcategories": [
+      {
+        "id": "waste-management--dustbin",
+        "name": "Dustbin",
+        "slug": "dustbin",
+        "filterKey": "Commercial Dustbins",
+        "href": "/waste-management/dustbin",
+        "desc": "UV-stabilized HDPE heavy-duty mobile waste bins (80L, 100L, 120L, 240L)."
+      }
+    ]
+  }
+]

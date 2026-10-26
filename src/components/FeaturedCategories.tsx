@@ -1,54 +1,30 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
+import { useCatalog } from "./CatalogProvider";
+
+const glowCycle = [
+  "group-hover:from-[#0090d0]/10 group-hover:to-sky-500/5",
+  "group-hover:from-blue-500/10 group-hover:to-indigo-500/5",
+  "group-hover:from-emerald-500/10 group-hover:to-teal-500/5",
+  "group-hover:from-[#e31e24]/10 group-hover:to-rose-500/5",
+];
 
 export default function FeaturedCategories() {
-  const modernCategories = [
-    {
-      id: "plastic",
-      name: "Plastic Furniture",
-      tagline: "Banquets & Dining",
-      highlight: "Virgin Polymer",
-      count: "17+ Models",
-      code: "01",
-      href: "/plastic-furniture",
-      image: "https://atlantaworld.in/admin/products/17164641970.png",
-      glowColor: "group-hover:from-[#0090d0]/10 group-hover:to-sky-500/5",
-    },
-    {
-      id: "office",
-      name: "Office Furniture",
-      tagline: "Executive & Task",
-      highlight: "Ergonomic Lumbar",
-      count: "10+ Models",
-      code: "02",
-      href: "/office-furniture",
-      image: "https://atlantaworld.in/admin/products/17161205220.jpg",
-      glowColor: "group-hover:from-blue-500/10 group-hover:to-indigo-500/5",
-    },
-    {
-      id: "institutional",
-      name: "Institutional Furniture",
-      tagline: "Classrooms & Labs",
-      highlight: "CRCA Steel",
-      count: "38+ Models",
-      code: "03",
-      href: "/office-institutional",
-      image: "https://atlantaworld.in/admin/products/17169780110.jpg",
-      glowColor: "group-hover:from-emerald-500/10 group-hover:to-teal-500/5",
-    },
-    {
-      id: "waste",
-      name: "Waste Management",
-      tagline: "Commercial Sanitation",
-      highlight: "Virgin HDPE",
-      count: "4+ Capacities",
-      code: "04",
-      href: "/waste-management",
-      image: "https://atlantaworld.in/admin/products/17172400200.jpg",
-      glowColor: "group-hover:from-[#e31e24]/10 group-hover:to-rose-500/5",
-    },
-  ];
+  const { categories, products } = useCatalog();
+  const modernCategories = categories.map((category, index) => ({
+    id: category.id,
+    name: category.shortName || category.name,
+    tagline: category.badge || "Factory Collection",
+    highlight: category.badge || "Atlanta Series",
+    count: `${products.filter((product) => product.category === category.categoryKey).length}+ Models`,
+    code: String(index + 1).padStart(2, "0"),
+    href: category.href,
+    image: category.image || "https://atlantaworld.in/admin/products/17164641970.png",
+    glowColor: glowCycle[index % glowCycle.length],
+  }));
 
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900 relative overflow-hidden border-b border-slate-200">

@@ -77,6 +77,24 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           {product.description}
         </p>
 
+        {(product.colors || []).length > 0 ? (
+          <div className="mb-3 flex items-center gap-1.5">
+            {(product.colors || []).slice(0, 6).map((color) => (
+              <span
+                key={`${color.name}-${color.hex}`}
+                title={color.name}
+                className="h-3.5 w-3.5 rounded-full border border-slate-200"
+                style={{ backgroundColor: color.hex }}
+              />
+            ))}
+            {(product.colors || []).length > 6 ? (
+              <span className="text-[10px] font-bold text-slate-400">
+                +{(product.colors || []).length - 6}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+
         {/* Price & Stock Section */}
         <div className="mt-auto pt-3 border-t border-slate-100 flex items-baseline justify-between mb-3">
           <div className="flex items-baseline gap-2">

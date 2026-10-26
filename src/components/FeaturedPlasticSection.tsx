@@ -9,26 +9,30 @@ import {
   ShieldCheck,
   Armchair,
 } from "lucide-react";
-import { getProductsForCategory, ProductItem } from "@/data/site";
+import { ProductItem } from "@/data/site";
 import ProductCard from "./ProductCard";
 import ProductQuickViewModal from "./ProductQuickViewModal";
 import Reveal from "./Reveal";
+import { useCatalog } from "./CatalogProvider";
 
 export default function FeaturedPlasticSection() {
+  const { findCategory, productsFor } = useCatalog();
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
   const [quickViewProduct, setQuickViewProduct] = useState<ProductItem | null>(null);
 
+  const plasticCategory = findCategory("plastic-furniture");
   const subcategoryTabs = [
-    { name: "All Models", key: "all", count: 17 },
-    { name: "Plastic Chairs", key: "plastic-chairs", count: 14 },
-    { name: "Dining Tables", key: "dining-tables", count: 4 },
-    { name: "Stools", key: "stools", count: 3 },
-    { name: "Party Halls", key: "party-halls", count: 3 },
+    { name: "All Models", key: "all", count: productsFor("plastic-furniture").length },
+    ...(plasticCategory?.subcategories.map((sub) => ({
+      name: sub.name,
+      key: sub.slug,
+      count: productsFor("plastic-furniture", sub.slug).length,
+    })) || []),
   ];
 
   const allPlasticProducts = useMemo(() => {
-    return getProductsForCategory("plastic-furniture", selectedSubcategory);
-  }, [selectedSubcategory]);
+    return productsFor("plastic-furniture", selectedSubcategory);
+  }, [selectedSubcategory, productsFor]);
 
   // Duplicate product array 3 times for a completely seamless, gapless continuous marquee loop
   const continuousList = useMemo(() => {

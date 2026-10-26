@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductBySlug, getRelatedProducts } from "@/data/product-details";
 import { products, site } from "@/data/site";
+import ProductColorImage from "@/components/ProductColorImage";
 import {
   Star,
   ShieldCheck,
@@ -12,6 +13,8 @@ import {
   ArrowRight,
   Award,
 } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -25,7 +28,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
 
   return {
@@ -36,15 +39,16 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  const related = getRelatedProducts(product.id, product.category, 4);
+  const related = await getRelatedProducts(product.id, product.category, 4);
+  const colourNames = (product.colors || []).map((color) => color.name).join(", ");
   const whatsappMessage = encodeURIComponent(
-    `Hello Atlanta Furniture, I am interested in purchasing "${product.title}" (${product.category} - ${product.price}). Please send commercial catalog and bulk quotation.`
+    `Hello Atlanta Furniture, I am interested in purchasing "${product.title}" (${product.category} - ${product.price})${colourNames ? `. Colour: ${colourNames}` : ""}. Please send commercial catalog and bulk quotation.`
   );
 
   return (
@@ -87,30 +91,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left: Product Images Column (5 Cols) */}
           <div className="lg:col-span-6 flex flex-col gap-4">
-            <div className="relative aspect-square w-full rounded-3xl bg-white border border-slate-200/90 p-8 flex items-center justify-center overflow-hidden shadow-sm">
-              <img
-                src={product.image}
-                alt={product.title}
-                className="max-h-full max-w-full object-contain"
-              />
-              <span className="absolute left-4 top-4 rounded-full bg-[#0090d0] px-3.5 py-1 text-xs font-bold text-white uppercase tracking-wider shadow-sm">
-                {product.subcategory}
-              </span>
-            </div>
-
-            {/* Gallery thumbnails */}
-            {product.gallery && product.gallery.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {product.gallery.map((img, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-xl border border-slate-200 bg-white p-2 flex items-center justify-center overflow-hidden shadow-sm"
-                  >
-                    <img src={img} alt="Gallery" className="h-full w-full object-contain" />
-                  </div>
-                ))}
-              </div>
-            )}
+            <ProductColorImage
+              title={product.title}
+              image={product.image}
+              gallery={product.gallery}
+              subcategory={product.subcategory}
+              colors={product.colors}
+            />
 
             {/* Quality assurance badges under image */}
             <div className="grid grid-cols-3 gap-3 pt-2 text-center text-xs text-slate-600">
@@ -175,6 +162,14 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 Technical Specifications & Standards
               </div>
               <div className="p-5 divide-y divide-slate-100 text-xs sm:text-sm">
+                {(product.colors || []).length > 0 ? (
+                  <div className="py-2.5 flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <span className="font-semibold text-slate-500">Available Colours</span>
+                    <span className="font-bold text-slate-900 sm:text-right max-w-sm">
+                      {(product.colors || []).map((color) => color.name).join(", ")}
+                    </span>
+                  </div>
+                ) : null}
                 {Object.entries(product.specifications).map(([k, v]) => (
                   <div key={k} className="py-2.5 flex flex-col sm:flex-row sm:justify-between gap-1">
                     <span className="font-semibold text-slate-500">{k}</span>

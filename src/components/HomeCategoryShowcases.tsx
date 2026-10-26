@@ -13,12 +13,14 @@ import {
   Building2,
   Zap,
 } from "lucide-react";
-import { getProductsForCategory, ProductItem, site } from "@/data/site";
+import { ProductItem, site } from "@/data/site";
 import ProductCard from "./ProductCard";
 import ProductQuickViewModal from "./ProductQuickViewModal";
 import Reveal from "./Reveal";
+import { useCatalog } from "./CatalogProvider";
 
 export default function HomeCategoryShowcases() {
+  const { productsFor } = useCatalog();
   const [quickViewProduct, setQuickViewProduct] = useState<ProductItem | null>(null);
 
   // Subcategory filter states
@@ -114,9 +116,9 @@ export default function HomeCategoryShowcases() {
 
   const activeOfficeSpotlight = officeSpotlights[officeSpotlightIndex];
 
-  const officeProducts = getProductsForCategory("office-furniture", officeSub);
-  const instProducts = getProductsForCategory("office-institutional", instSub).slice(0, 4);
-  const wasteProducts = getProductsForCategory("waste-management", wasteSub).slice(0, 3);
+  const officeProducts = productsFor("office-furniture", officeSub);
+  const instProducts = productsFor("office-institutional", instSub).slice(0, 4);
+  const wasteProducts = productsFor("waste-management", wasteSub).slice(0, 3);
 
   // Auto-advance right-side office chairs carousel one-by-one in a loop every 3.5 seconds
   useEffect(() => {

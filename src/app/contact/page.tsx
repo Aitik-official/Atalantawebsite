@@ -11,8 +11,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { site } from "@/data/site";
+import { useCatalog } from "@/components/CatalogProvider";
 
 export default function ContactPage() {
+  const { categories } = useCatalog();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,10 +26,30 @@ export default function ContactPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok || !data?.ok) {
+        setSubmitError(data?.error || "Could not submit your request. Please try again.");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Could not submit your request. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(
@@ -284,10 +306,11 @@ export default function ContactPage() {
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                         className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#0090d0] focus:outline-none cursor-pointer shadow-sm font-medium"
                       >
-                        <option value="Plastic Furniture">Plastic Furniture (Chairs, Stools, Tables)</option>
-                        <option value="Office Furniture">Office Furniture (Director & Executive Chairs)</option>
-                        <option value="Institutional Furniture">Institutional (Student Benches & Desks)</option>
-                        <option value="Waste Management">Waste Management (100L, 120L, 240L Dustbins)</option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.categoryKey}>
+                            {category.shortName || category.name}
+                          </option>
+                        ))}
                         <option value="Complete Facility Turnkey">Complete Facility Turnkey Package</option>
                       </select>
                     </div>
@@ -319,13 +342,18 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {submitError ? (
+                    <p className="text-sm font-medium text-red-600">{submitError}</p>
+                  ) : null}
+
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#0090d0] hover:bg-[#007cb3] py-4 px-6 text-sm font-bold uppercase tracking-wider text-white shadow-md transition"
+                      disabled={submitting}
+                      className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#0090d0] hover:bg-[#007cb3] py-4 px-6 text-sm font-bold uppercase tracking-wider text-white shadow-md transition disabled:opacity-60"
                     >
                       <Send className="h-4 w-4" />
-                      <span>Submit Quotation Request</span>
+                      <span>{submitting ? "Submitting..." : "Submit Quotation Request"}</span>
                     </button>
 
                     <a

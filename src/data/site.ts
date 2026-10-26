@@ -1,5 +1,11 @@
 import atlantaProducts from "./atlanta-furniture.json";
 
+export type ProductColor = {
+  name: string;
+  hex: string;
+  image?: string;
+};
+
 export interface ProductItem {
   id: string;
   slug: string;
@@ -19,6 +25,7 @@ export interface ProductItem {
   material: string;
   description: string;
   specifications: Record<string, string>;
+  colors?: ProductColor[];
 }
 
 export const products: ProductItem[] = atlantaProducts as unknown as ProductItem[];

@@ -65,6 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${poppins.variable} ${playfair.variable} ${oswald.variable} ${michroma.variable} h-full light`}
     >
       <body className="flex min-h-full flex-col font-sans antialiased bg-[#faf9f6] text-[#1c1e22]">

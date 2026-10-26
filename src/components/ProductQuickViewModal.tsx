@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { X, ShieldCheck, MessageSquare, ArrowRight, Star } from "lucide-react";
 import { ProductItem, site } from "@/data/site";
+import ProductColorSwatches from "@/components/ProductColorSwatches";
 
 interface QuickViewProps {
   product: ProductItem | null;
@@ -108,6 +109,14 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
             <p className="text-slate-600 text-sm leading-relaxed mb-4">
               {product.description}
             </p>
+
+            <ProductColorSwatches
+              colors={product.colors}
+              onSelect={(index) => {
+                const color = product.colors?.[index];
+                setSelectedImage(color?.image || product.image);
+              }}
+            />
 
             {/* Specifications Quick View */}
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 mb-5 space-y-2 text-xs">

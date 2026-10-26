@@ -10,14 +10,14 @@ import {
   Phone, 
   Search, 
   X, 
-  MessageSquare, 
-  Sparkles,
-  Layers
+  MessageSquare
 } from "lucide-react";
 import Logo from "./Logo";
-import { navItems, site } from "@/data/site";
+import { site } from "@/data/site";
+import { useCatalog } from "./CatalogProvider";
 
 export default function Navbar() {
+  const { navItems } = useCatalog();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
@@ -261,10 +261,25 @@ export default function Navbar() {
 
             {/* Mobile Categories Accordion */}
             {navItems
-              .filter((item): item is typeof item & { children: NonNullable<typeof item.children> } => Boolean(item.children && item.children.length > 0))
+              .filter((item) => item.href !== "/" && item.href !== "/about" && item.href !== "/testimonials" && item.href !== "/contact")
               .map((item) => {
+                const children = item.children || [];
                 const isAccordionOpen = mobileAccordion === item.label;
-                const hasSubActive = item.children.some((sub) => pathname === sub.href) || pathname === item.href;
+                const hasSubActive = children.some((sub) => pathname === sub.href) || pathname === item.href;
+
+                if (children.length === 0) {
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className={`px-3 py-2.5 rounded-lg text-sm font-bold uppercase ${
+                        hasSubActive ? "bg-sky-50 text-[#0090d0]" : "text-slate-800 hover:bg-slate-50"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                }
 
                 return (
                   <div key={item.label} className="border-b border-slate-100 py-1">
@@ -297,7 +312,7 @@ export default function Navbar() {
                         >
                           All {item.label} Models &rarr;
                         </Link>
-                        {item.children.map((sub) => (
+                        {children.map((sub) => (
                           <Link
                             key={sub.href}
                             href={sub.href}

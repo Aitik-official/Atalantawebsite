@@ -10,19 +10,12 @@ import {
   Sparkles, 
   Phone, 
   MessageSquare, 
-  Layers, 
-  ArrowLeft,
   CheckCircle2
 } from "lucide-react";
-import { 
-  ProductItem, 
-  getCategoryBySlug, 
-  getSubcategoryBySlug, 
-  getProductsForCategory,
-  site 
-} from "@/data/site";
+import { ProductItem, site } from "@/data/site";
 import ProductCard from "./ProductCard";
 import ProductQuickViewModal from "./ProductQuickViewModal";
+import { useCatalog } from "./CatalogProvider";
 
 interface CategoryViewProps {
   categorySlug: string;
@@ -30,8 +23,9 @@ interface CategoryViewProps {
 }
 
 export default function CategoryView({ categorySlug, subcategorySlug }: CategoryViewProps) {
-  const category = getCategoryBySlug(categorySlug);
-  const currentSub = subcategorySlug ? getSubcategoryBySlug(categorySlug, subcategorySlug) : null;
+  const { findCategory, findSubcategory, productsFor, ready } = useCatalog();
+  const category = findCategory(categorySlug);
+  const currentSub = subcategorySlug ? findSubcategory(categorySlug, subcategorySlug) : null;
   
   const [selectedSub, setSelectedSub] = useState<string>(subcategorySlug || "all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,7 +35,7 @@ export default function CategoryView({ categorySlug, subcategorySlug }: Category
   const subcategories = category?.subcategories || [];
 
   const productsList = useMemo(() => {
-    let prods = getProductsForCategory(categorySlug, selectedSub === "all" ? undefined : selectedSub);
+    let prods = productsFor(categorySlug, selectedSub === "all" ? undefined : selectedSub);
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -63,7 +57,15 @@ export default function CategoryView({ categorySlug, subcategorySlug }: Category
     }
 
     return prods;
-  }, [categorySlug, selectedSub, searchQuery, sortBy]);
+  }, [categorySlug, selectedSub, searchQuery, sortBy, productsFor]);
+
+  if (!category && !ready) {
+    return (
+      <div className="min-h-[40vh] flex items-center justify-center text-slate-500">
+        Loading collection...
+      </div>
+    );
+  }
 
   if (!category) {
     return (
