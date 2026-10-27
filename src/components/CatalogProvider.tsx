@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { products as seedProducts } from "@/data/site";
+import { withProductMedia } from "@/lib/media";
 import {
   categoriesToNavItems,
   filterProductsForCategory,
@@ -34,7 +35,9 @@ type CatalogContextValue = {
 const CatalogContext = createContext<CatalogContextValue | null>(null);
 
 export function CatalogProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<ProductItem[]>(seedProducts);
+  const [products, setProducts] = useState<ProductItem[]>(() =>
+    seedProducts.map((product) => withProductMedia(product)),
+  );
   const [categories, setCategories] = useState<StoredCategory[]>(() => seedCategories());
   const [ready, setReady] = useState(false);
 

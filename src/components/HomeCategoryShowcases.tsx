@@ -42,7 +42,7 @@ export default function HomeCategoryShowcases() {
       badge: "Executive Flagship",
       spec: "Class-4 Gas Lift",
       desc: "Plush high-density multi-layer cushioning with chrome star base and multi-position synchro-tilt lock for 12+ hr daily posture support.",
-      image: "https://atlantaworld.in/admin/products/17161205220.jpg",
+      image: "/admin/products/17161205220.jpg",
       f1: "Synchro-Tilt",
       f2: "Chrome Star Base",
       link: "/office-furniture/director-chair",
@@ -53,7 +53,7 @@ export default function HomeCategoryShowcases() {
       badge: "Ergonomic Bestseller",
       spec: "Orthopedic Lumbar",
       desc: "Breathable high-tensile Korean mesh with 2D adjustable armrests and synchro-tilt mechanism engineered for corporate workstations.",
-      image: "https://atlantaworld.in/admin/products/17161208640.jpg",
+      image: "/admin/products/17161208640.jpg",
       f1: "Breathable Mesh",
       f2: "2D Armrests",
       link: "/office-furniture/executive-chairs",
@@ -64,7 +64,7 @@ export default function HomeCategoryShowcases() {
       badge: "Boardroom Premium",
       spec: "Cantilever Steel",
       desc: "Heavy-gauge tubular steel cantilever sledge base with anti-tip nylon glides for conference and visitor seating.",
-      image: "https://atlantaworld.in/admin/products/17161210760.jpg",
+      image: "/admin/products/17161210760.jpg",
       f1: "Tubular Steel",
       f2: "Anti-Tip Glides",
       link: "/office-furniture/visitor-chairs",
@@ -75,7 +75,7 @@ export default function HomeCategoryShowcases() {
       badge: "Director Series",
       spec: "Diamond Quilting",
       desc: "Diamond-patterned orthopedic backrest with heavy-duty castors and tilt-tension adjustment for corporate boardrooms.",
-      image: "https://atlantaworld.in/admin/products/17161207300.jpg",
+      image: "/admin/products/17161207300.jpg",
       f1: "Contoured Foam",
       f2: "Twin Castors",
       link: "/office-furniture/director-chair",
@@ -86,7 +86,7 @@ export default function HomeCategoryShowcases() {
       badge: "Task Ergonomics",
       spec: "Multi-Lock Tilt",
       desc: "Ergonomic s-curve lumbar curve with responsive pneumatic lift and 360-degree silent swivel nylon base.",
-      image: "https://atlantaworld.in/admin/products/17161210180.jpg",
+      image: "/admin/products/17161210180.jpg",
       f1: "S-Curve Frame",
       f2: "Class-4 Piston",
       link: "/office-furniture/executive-chairs",
@@ -97,7 +97,7 @@ export default function HomeCategoryShowcases() {
       badge: "Conference Series",
       spec: "Chrome Cantilever",
       desc: "Heavy-gauge tubular steel sledge base with high-density molded seat padding for guest meeting spaces.",
-      image: "https://atlantaworld.in/admin/products/17161211170.jpg",
+      image: "/admin/products/17161211170.jpg",
       f1: "Heavy Steel",
       f2: "Molded Cushion",
       link: "/office-furniture/visitor-chairs",
@@ -218,7 +218,7 @@ export default function HomeCategoryShowcases() {
                       alt={activeOfficeSpotlight.title}
                       className="h-full w-full object-contain drop-shadow-md animate-fadeIn"
                       onError={(e) => {
-                        e.currentTarget.src = "https://atlantaworld.in/admin/products/17161205220.jpg";
+                        e.currentTarget.src = "/admin/products/17161205220.jpg";
                       }}
                     />
                   </div>

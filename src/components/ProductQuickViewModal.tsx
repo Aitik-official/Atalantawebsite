@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, ShieldCheck, MessageSquare, ArrowRight, Star } from "lucide-react";
 import { ProductItem, site } from "@/data/site";
 import ProductColorSwatches from "@/components/ProductColorSwatches";
+import { mediaUrl } from "@/lib/media";
 
 interface QuickViewProps {
   product: ProductItem | null;
@@ -17,7 +18,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
 
   if (!product) return null;
 
-  const currentImg = selectedImage || product.image;
+  const currentImg = mediaUrl(selectedImage || product.image);
   const whatsappMessage = encodeURIComponent(
     `Hello Atlanta Furniture, I would like to inquire about "${product.title}" (${product.category} - ${product.subcategory}). Quantity: ${quantity} units.`
   );
@@ -47,7 +48,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
                 className="max-h-full max-w-full object-contain transition duration-300 hover:scale-105"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
-                    "https://atlantaworld.in/admin/products/17164641970.png";
+                    "/admin/products/17164641970.png";
                 }}
               />
               <span className="absolute left-3 top-3 rounded-full bg-[#0090d0] px-3 py-1 text-[11px] font-bold text-white uppercase tracking-wider shadow-sm">

@@ -10,7 +10,7 @@ export default function InstitutionalShowcase() {
       title: "Schools & Universities",
       description: "Dual student benches, lab computer desks, library tables, and hostel bunk beds engineered for heavy classroom traffic.",
       highlights: ["Tamper-proof fasteners", "Ergonomic posture angles", "Rounded anti-injury safety edges"],
-      image: "https://atlantaworld.in/admin/products/17188714390.jpg",
+      image: "/admin/products/17188714390.jpg",
       href: "/products?category=Institutional+Furniture",
     },
     {
@@ -18,7 +18,7 @@ export default function InstitutionalShowcase() {
       title: "Corporate & IT Parks",
       description: "Synchro-tilt executive mesh chairs, director leatherette seating, modular work desks, and conference room suites.",
       highlights: ["3D adjustable armrests", "Breathable Korean mesh", "BIFMA certified hydraulic gas lifts"],
-      image: "https://atlantaworld.in/admin/products/17161205220.jpg",
+      image: "/admin/products/17161205220.jpg",
       href: "/products?category=Office+Furniture",
     },
     {
@@ -26,7 +26,7 @@ export default function InstitutionalShowcase() {
       title: "Banquets & Event Venues",
       description: "Stackable luxury polymer chairs, lightweight catering tables, and crystal banquet seating with 200kg load capacity.",
       highlights: ["High-density stackability", "Scratch & stain resistant", "Vibrant gloss color retention"],
-      image: "https://atlantaworld.in/admin/products/17164641970.png",
+      image: "/admin/products/17164641970.png",
       href: "/products?category=Plastic+Furniture",
     },
     {
@@ -34,7 +34,7 @@ export default function InstitutionalShowcase() {
       title: "Municipal & Waste Logistics",
       description: "High-capacity mobile wheelie bins (100L, 120L, 240L) built from UV-stabilized virgin HDPE for harsh outdoor sanitation.",
       highlights: ["Shock-absorbing rubber wheels", "Reinforced pedal linkage", "UV & chemical resistant"],
-      image: "https://atlantaworld.in/admin/products/17172400200.jpg",
+      image: "/admin/products/17172400200.jpg",
       href: "/products?category=Waste+Management",
     },
   ];

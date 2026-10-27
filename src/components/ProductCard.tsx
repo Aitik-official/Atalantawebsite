@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Eye, MessageSquare, Star, ArrowRight } from "lucide-react";
 import { ProductItem } from "@/data/site";
+import { mediaUrl } from "@/lib/media";
 
 interface ProductCardProps {
   product: ProductItem;
@@ -11,7 +12,11 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onQuickView }: ProductCardProps) {
-  const [imgSrc, setImgSrc] = useState(product.image);
+  const [imgSrc, setImgSrc] = useState(mediaUrl(product.image));
+
+  useEffect(() => {
+    setImgSrc(mediaUrl(product.image));
+  }, [product.image]);
 
   const whatsappMessage = encodeURIComponent(
     `Hello Atlanta Furniture, I am interested in "${product.title}" (${product.category} - ${product.price}). Please share specifications and best quotation.`
@@ -26,7 +31,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           alt={product.title}
           className="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
           onError={() => {
-            setImgSrc("https://atlantaworld.in/admin/products/17164641970.png");
+            setImgSrc("/admin/products/17164641970.png");
           }}
           loading="lazy"
         />

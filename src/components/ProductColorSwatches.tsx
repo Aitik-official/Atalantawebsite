@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ProductColor } from "@/data/site";
+import { mediaUrl } from "@/lib/media";
 
 export default function ProductColorSwatches({
   colors,
@@ -60,7 +61,7 @@ export default function ProductColorSwatches({
             >
               {color.image ? (
                 <img
-                  src={color.image}
+                  src={mediaUrl(color.image)}
                   alt=""
                   className="h-full w-full object-cover"
                 />

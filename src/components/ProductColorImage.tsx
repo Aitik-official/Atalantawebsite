@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { ProductColor } from "@/data/site";
 import ProductColorSwatches from "@/components/ProductColorSwatches";
+import { mediaUrl } from "@/lib/media";
 
 export default function ProductColorImage({
   title,
@@ -20,11 +21,11 @@ export default function ProductColorImage({
   const [selected, setSelected] = useState(0);
   const [manualImage, setManualImage] = useState<string | null>(null);
   const active = colors[selected];
-  const current = manualImage || active?.image || image;
+  const current = mediaUrl(manualImage || active?.image || image);
 
   const thumbs = useMemo(() => {
     const items = [image, ...gallery, ...colors.map((color) => color.image || "")]
-      .map((item) => item.trim())
+      .map((item) => mediaUrl(item.trim()))
       .filter(Boolean);
     return Array.from(new Set(items));
   }, [image, gallery, colors]);

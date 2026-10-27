@@ -11,7 +11,19 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "atlantaworld.in",
       },
+      {
+        protocol: "https",
+        hostname: "www.atlantaworld.in",
+      },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/admin/products/:file",
+        destination: "/api/media/:file",
+      },
+    ];
   },
 };
 

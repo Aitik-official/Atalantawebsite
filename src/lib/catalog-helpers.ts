@@ -1,5 +1,6 @@
 import { categoriesData, navCategories, type NavItem } from "@/data/site";
 import type { ProductItem, StoredCategory, StoredSubcategory } from "./catalog-types";
+import { mediaUrl } from "./media";
 
 export function slugify(value: string) {
   const base = value
@@ -44,7 +45,7 @@ export function seedCategories(): StoredCategory[] {
       href: category.href,
       categoryKey: category.categoryKey,
       description: extra?.description ?? "",
-      image: extra?.image ?? "",
+      image: mediaUrl(extra?.image ?? ""),
       badge: extra?.badge ?? "",
       subcategories: category.subcategories.map((sub) => ({
         id: `${category.slug}--${sub.slug}`,

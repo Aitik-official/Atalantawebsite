@@ -14,6 +14,7 @@ import type {
 } from "./catalog-types";
 import { readFallbackCategories, readFallbackProducts } from "./json-store";
 import { ensureMongoSeeded } from "./mongo-seed";
+import { mediaUrl, withProductMedia } from "./media";
 import { describeMongoError, getCollection, stripMongoId } from "./mongodb";
 import { normalizeProductColors } from "./product-colors";
 
@@ -47,15 +48,18 @@ function displayPrice(value?: string, fallback = 0) {
 
 function toProduct(doc: ProductDoc): ProductItem {
   const { createdAt: _createdAt, ...product } = stripMongoId(doc);
-  return {
+  return withProductMedia({
     ...(product as ProductItem),
     colors: normalizeProductColors((product as ProductItem).colors),
-  };
+  });
 }
 
 function toCategory(doc: CategoryDoc): StoredCategory {
   const { createdAt: _createdAt, ...category } = stripMongoId(doc);
-  return category as StoredCategory;
+  return {
+    ...(category as StoredCategory),
+    image: mediaUrl((category as StoredCategory).image),
+  };
 }
 
 export async function getProducts(): Promise<ProductItem[]> {

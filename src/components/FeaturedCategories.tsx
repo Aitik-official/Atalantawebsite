@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
+import { mediaUrl } from "@/lib/media";
 import { useCatalog } from "./CatalogProvider";
 
 const glowCycle = [
@@ -22,7 +23,7 @@ export default function FeaturedCategories() {
     count: `${products.filter((product) => product.category === category.categoryKey).length}+ Models`,
     code: String(index + 1).padStart(2, "0"),
     href: category.href,
-    image: category.image || "https://atlantaworld.in/admin/products/17164641970.png",
+    image: mediaUrl(category.image) || "/admin/products/17164641970.png",
     glowColor: glowCycle[index % glowCycle.length],
   }));
 

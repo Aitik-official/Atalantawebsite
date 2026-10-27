@@ -29,7 +29,7 @@ export default function InstitutionalPage() {
         "Hostel Double-Deck Bunk Beds",
       ],
       icon: GraduationCap,
-      image: "https://atlantaworld.in/admin/products/17188714390.jpg",
+      image: "/admin/products/17188714390.jpg",
     },
     {
       title: "Corporate Workspaces & IT Facilities",
@@ -41,7 +41,7 @@ export default function InstitutionalPage() {
         "Heavy Duty Metal Filing & Storage Cabinets",
       ],
       icon: Building2,
-      image: "https://atlantaworld.in/admin/products/17161205220.jpg",
+      image: "/admin/products/17161205220.jpg",
     },
     {
       title: "Hospitality, Banquets & Convention Halls",
@@ -53,7 +53,7 @@ export default function InstitutionalPage() {
         "UV-Stabilized All-Weather Garden Sets",
       ],
       icon: PartyPopper,
-      image: "https://atlantaworld.in/admin/products/17164641970.png",
+      image: "/admin/products/17164641970.png",
     },
     {
       title: "Municipal Waste & Commercial Sanitation",
@@ -65,7 +65,7 @@ export default function InstitutionalPage() {
         "Color-Coded Bio-Medical & Segregation Bins",
       ],
       icon: Trash2,
-      image: "https://atlantaworld.in/admin/products/17172400200.jpg",
+      image: "/admin/products/17172400200.jpg",
     },
   ];
 
