@@ -60,7 +60,8 @@ function fetchOrigin(file: string) {
 }
 
 function imageResponse(body: Buffer, contentType: string) {
-  return new NextResponse(body, {
+  const bytes = Uint8Array.from(body);
+  return new NextResponse(new Blob([bytes], { type: contentType }), {
     status: 200,
     headers: {
       "Content-Type": contentType,
