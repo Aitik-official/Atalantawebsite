@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { site } from "@/data/site";
 import { createEnquiry } from "@/lib/enquiries";
+import { ENQUIRY_TO_EMAIL, sendEnquiryEmail } from "@/lib/enquiry-mail";
 
 type ContactBody = {
   name?: string;
@@ -15,6 +14,7 @@ type ContactBody = {
 };
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
@@ -22,11 +22,11 @@ export async function POST(request: Request) {
     const name = body.name?.trim() ?? "";
     const email = body.email?.trim() ?? "";
     const phone = body.phone?.trim() ?? "";
-    const category = body.category?.trim() ?? "General Inquiry";
-    const quantity = body.quantity?.trim() ?? "N/A";
-    const organization = body.organization?.trim() ?? "N/A";
+    const category = body.category?.trim() || "General Inquiry";
+    const quantity = body.quantity?.trim() || "N/A";
+    const organization = body.organization?.trim() || "N/A";
     const message = body.message?.trim() ?? "";
-    const productTitle = body.productTitle?.trim() ?? "";
+    const productTitle = body.productTitle?.trim() || undefined;
 
     if (!name || !email || !phone) {
       return NextResponse.json(
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const enquiry = await createEnquiry({
+    const payload = {
       name,
       email,
       phone,
@@ -43,52 +43,26 @@ export async function POST(request: Request) {
       quantity,
       organization,
       message,
-      productTitle: productTitle || undefined,
-    });
+      productTitle,
+    };
 
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({
-        ok: true,
-        id: enquiry.id,
-        message: "Thank you! Your quotation request has been recorded.",
-      });
+    let enquiryId: string | undefined;
+    try {
+      const enquiry = await createEnquiry(payload);
+      enquiryId = enquiry.id;
+    } catch (error) {
+      console.error("[contact] Could not save enquiry to MongoDB:", error);
     }
 
-    const resend = new Resend(apiKey);
-    const from = process.env.RESEND_FROM ?? "Atlanta Furniture <onboarding@resend.dev>";
+    await sendEnquiryEmail(payload);
 
-    await resend.emails.send({
-      from,
-      to: [site.email],
-      replyTo: email,
-      subject: `Atlanta Furniture Quotation Request: ${category} - ${name}`,
-      html: `
-        <h2>New Quotation Request</h2>
-        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-        <p><strong>Organization:</strong> ${escapeHtml(organization)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        <p><strong>Mobile:</strong> ${escapeHtml(phone)}</p>
-        <p><strong>Category:</strong> ${escapeHtml(category)}</p>
-        <p><strong>Estimated Quantity:</strong> ${escapeHtml(quantity)}</p>
-        ${productTitle ? `<p><strong>Product:</strong> ${escapeHtml(productTitle)}</p>` : ""}
-        <p><strong>Requirement Details:</strong></p>
-        <p>${escapeHtml(message || "—")}</p>
-      `,
+    return NextResponse.json({
+      ok: true,
+      id: enquiryId,
+      deliveredTo: ENQUIRY_TO_EMAIL,
     });
-
-    return NextResponse.json({ ok: true, id: enquiry.id });
   } catch (e) {
-    const err = e instanceof Error ? e.message : "Internal error";
+    const err = e instanceof Error ? e.message : "Could not send your enquiry.";
     return NextResponse.json({ ok: false, error: err }, { status: 500 });
   }
-}
-
-function escapeHtml(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
