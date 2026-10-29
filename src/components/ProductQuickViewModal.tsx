@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { X, ShieldCheck, MessageSquare, ArrowRight, Star } from "lucide-react";
-import { ProductItem, site } from "@/data/site";
+import { ProductItem, site, whatsappHref } from "@/data/site";
 import ProductColorSwatches from "@/components/ProductColorSwatches";
 import { mediaUrl } from "@/lib/media";
 
@@ -19,8 +19,8 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
   if (!product) return null;
 
   const currentImg = mediaUrl(selectedImage || product.image);
-  const whatsappMessage = encodeURIComponent(
-    `Hello Atlanta Furniture, I would like to inquire about "${product.title}" (${product.category} - ${product.subcategory}). Quantity: ${quantity} units.`
+  const whatsappUrl = whatsappHref(
+    `Hello Atlanta Furniture, I would like to inquire about "${product.title}" (${product.category} - ${product.subcategory}). Quantity: ${quantity} units.`,
   );
 
   return (
@@ -166,7 +166,7 @@ export default function ProductQuickViewModal({ product, onClose }: QuickViewPro
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 py-3 px-4 text-sm font-bold text-white shadow-md transition"

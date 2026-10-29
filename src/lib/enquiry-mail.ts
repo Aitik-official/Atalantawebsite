@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { site } from "@/data/site";
 
 export type EnquiryMailInput = {
   name: string;
@@ -46,9 +47,17 @@ export async function sendEnquiryEmail(input: EnquiryMailInput) {
     ? row("Product", input.productTitle)
     : "";
 
+  const recipients = Array.from(
+    new Set(
+      [ENQUIRY_TO_EMAIL, site.email, "atlantafurnitureworld@gmail.com"]
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ),
+  );
+
   const { error } = await resend.emails.send({
     from: RESEND_FROM,
-    to: [ENQUIRY_TO_EMAIL],
+    to: recipients,
     replyTo: input.email,
     subject: `New enquiry: ${input.category} — ${input.name}`,
     html: `

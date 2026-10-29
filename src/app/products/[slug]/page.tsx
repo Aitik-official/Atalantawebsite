@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductBySlug, getRelatedProducts } from "@/data/product-details";
-import { products, site } from "@/data/site";
+import { products, site, whatsappHref } from "@/data/site";
 import ProductColorImage from "@/components/ProductColorImage";
 import {
   Star,
@@ -47,8 +47,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   const related = await getRelatedProducts(product.id, product.category, 4);
   const colourNames = (product.colors || []).map((color) => color.name).join(", ");
-  const whatsappMessage = encodeURIComponent(
-    `Hello Atlanta Furniture, I am interested in purchasing "${product.title}" (${product.category} - ${product.price})${colourNames ? `. Colour: ${colourNames}` : ""}. Please send commercial catalog and bulk quotation.`
+  const whatsappUrl = whatsappHref(
+    `Hello Atlanta Furniture, I am interested in purchasing "${product.title}" (${product.category} - ${product.price})${colourNames ? `. Colour: ${colourNames}` : ""}. Please send commercial catalog and bulk quotation.`,
   );
 
   return (
@@ -184,7 +184,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3.5 mb-8">
               <a
-                href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 py-4 px-6 text-sm sm:text-base font-bold text-white shadow-md transition"

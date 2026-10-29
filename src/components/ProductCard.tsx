@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Eye, MessageSquare, Star, ArrowRight } from "lucide-react";
-import { ProductItem } from "@/data/site";
+import { ProductItem, whatsappHref } from "@/data/site";
 import { mediaUrl } from "@/lib/media";
 
 interface ProductCardProps {
@@ -18,8 +18,8 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
     setImgSrc(mediaUrl(product.image));
   }, [product.image]);
 
-  const whatsappMessage = encodeURIComponent(
-    `Hello Atlanta Furniture, I am interested in "${product.title}" (${product.category} - ${product.price}). Please share specifications and best quotation.`
+  const whatsappUrl = whatsappHref(
+    `Hello Atlanta Furniture, I am interested in "${product.title}" (${product.category} - ${product.price}). Please share specifications and best quotation.`,
   );
 
   return (
@@ -120,7 +120,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         {/* Bottom Actions */}
         <div className="grid grid-cols-2 gap-2 pt-1">
           <a
-            href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-600/30 bg-emerald-50 py-2 px-2 text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition"

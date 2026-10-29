@@ -12,7 +12,7 @@ import {
   MessageSquare, 
   CheckCircle2
 } from "lucide-react";
-import { ProductItem, site } from "@/data/site";
+import { ProductItem, site, whatsappHref } from "@/data/site";
 import ProductCard from "./ProductCard";
 import ProductQuickViewModal from "./ProductQuickViewModal";
 import { useCatalog } from "./CatalogProvider";
@@ -160,7 +160,9 @@ export default function CategoryView({ categorySlug, subcategorySlug }: Category
               
               <div className="flex flex-col gap-2">
                 <a
-                  href={`${site.whatsapp}&text=Hello%20Atlanta%20Furniture,%20I%20am%20inquiring%20about%20${encodeURIComponent(pageTitle)}.`}
+                  href={whatsappHref(
+                    `Hello Atlanta Furniture, I am inquiring about ${pageTitle}.`,
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition"

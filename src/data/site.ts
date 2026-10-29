@@ -37,12 +37,14 @@ export const site = {
   tagline: "Premium Polymer, Office & Institutional Furniture",
   description:
     "Atlanta Furniture is a premier manufacturer of high-grade plastic molded seating, ergonomic office chairs, institutional student desks & benches, and heavy-duty waste management solutions.",
-  email: "info@atlantafurniture.com",
-  secondaryEmail: "atlantaworld2014@gmail.com",
-  phone: "+91 9930349455",
-  secondaryPhone: "+91 8898114400",
-  phoneHref: "tel:+919930349455",
-  whatsapp: "https://wa.me/919930349455?text=Hello%20Atlanta%20Furniture,%20I%20am%20interested%20in%20your%20furniture%20catalog.",
+  email: "atlantafurnitureworld@gmail.com",
+  secondaryEmail: "atlantafurnitureworld@gmail.com",
+  phone: "+91 8691009547",
+  secondaryPhone: "+91 8691009547",
+  phoneHref: "tel:+918691009547",
+  whatsappNumber: "918691009547",
+  whatsapp:
+    "https://wa.me/918691009547?text=Hello%20Atlanta%20Furniture,%20I%20am%20interested%20in%20your%20furniture%20catalog.",
   founded: "2014",
   hours: "Mon – Sat: 9:30 AM – 7:30 PM\nSun: Closed",
   hoursShort: "Mon – Sat · 9:30 AM – 7:30 PM",
@@ -62,6 +64,10 @@ export const site = {
   logo: "/logo/atlanta-logo.png",
   heroImage: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2000&q=80",
 } as const;
+
+export function whatsappHref(text: string) {
+  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
 
 export interface NavSubcategory {
   name: string;

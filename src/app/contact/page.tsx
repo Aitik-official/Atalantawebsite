@@ -10,7 +10,7 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
-import { site } from "@/data/site";
+import { site, whatsappHref } from "@/data/site";
 import { useCatalog } from "@/components/CatalogProvider";
 
 export default function ContactPage() {
@@ -52,8 +52,8 @@ export default function ContactPage() {
     }
   };
 
-  const whatsappMessage = encodeURIComponent(
-    `Hello Atlanta Furniture, I would like to request an official quotation.\nName: ${formData.name || "Customer"}\nOrganization: ${formData.organization || "N/A"}\nPhone: ${formData.phone || "N/A"}\nCategory: ${formData.category}\nEstimated Quantity: ${formData.quantity}\nDetails: ${formData.message || "Please contact me."}`
+  const whatsappUrl = whatsappHref(
+    `Hello Atlanta Furniture, I would like to request an official quotation.\nName: ${formData.name || "Customer"}\nOrganization: ${formData.organization || "N/A"}\nPhone: ${formData.phone || "N/A"}\nCategory: ${formData.category}\nEstimated Quantity: ${formData.quantity}\nDetails: ${formData.message || "Please contact me."}`,
   );
 
   return (
@@ -109,12 +109,14 @@ export default function ContactPage() {
                   >
                     {site.phone}
                   </a>
-                  <a
-                    href="tel:+918898114400"
-                    className="text-sm text-slate-600 hover:text-[#0090d0] block mt-0.5"
-                  >
-                    {site.secondaryPhone}
-                  </a>
+                  {site.secondaryPhone !== site.phone ? (
+                    <a
+                      href={`tel:${site.secondaryPhone.replace(/\s/g, "")}`}
+                      className="text-sm text-slate-600 hover:text-[#0090d0] block mt-0.5"
+                    >
+                      {site.secondaryPhone}
+                    </a>
+                  ) : null}
                 </div>
               </div>
 
@@ -154,12 +156,14 @@ export default function ContactPage() {
                   >
                     {site.email}
                   </a>
-                  <a
-                    href={`mailto:${site.secondaryEmail}`}
-                    className="text-xs text-slate-600 hover:text-[#0090d0] block mt-0.5"
-                  >
-                    {site.secondaryEmail}
-                  </a>
+                  {site.secondaryEmail !== site.email ? (
+                    <a
+                      href={`mailto:${site.secondaryEmail}`}
+                      className="text-xs text-slate-600 hover:text-[#0090d0] block mt-0.5"
+                    >
+                      {site.secondaryEmail}
+                    </a>
+                  ) : null}
                 </div>
               </div>
 
@@ -218,7 +222,7 @@ export default function ContactPage() {
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
-                      href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+                      href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-xs font-bold uppercase text-white hover:bg-emerald-500 transition shadow-sm"
@@ -357,7 +361,7 @@ export default function ContactPage() {
                     </button>
 
                     <a
-                      href={`https://wa.me/919930349455?text=${whatsappMessage}`}
+                      href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 rounded-2xl border border-emerald-600/30 bg-emerald-50 py-4 px-6 text-sm font-bold text-emerald-800 hover:bg-emerald-100 transition shadow-sm"

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { GraduationCap, Briefcase, PartyPopper, Trash2, ArrowRight, CheckCircle2, MessageSquare, Phone } from "lucide-react";
-import { site } from "@/data/site";
+import { site, whatsappHref } from "@/data/site";
 import Reveal from "./Reveal";
 
 export default function InstitutionalShowcase() {
@@ -113,7 +113,9 @@ export default function InstitutionalShowcase() {
                       View Matching Products &rarr;
                     </Link>
                     <a
-                      href={`https://wa.me/919930349455?text=Hello%20Atlanta%20Furniture,%20I%20need%20a%20bulk%20quote%20for%20${encodeURIComponent(sec.title)}`}
+                      href={whatsappHref(
+                        `Hello Atlanta Furniture, I need a bulk quote for ${sec.title}`,
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
