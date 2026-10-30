@@ -109,14 +109,6 @@ export default function ContactPage() {
                   >
                     {site.phone}
                   </a>
-                  {site.secondaryPhone !== site.phone ? (
-                    <a
-                      href={`tel:${site.secondaryPhone.replace(/\s/g, "")}`}
-                      className="text-sm text-slate-600 hover:text-[#0090d0] block mt-0.5"
-                    >
-                      {site.secondaryPhone}
-                    </a>
-                  ) : null}
                 </div>
               </div>
 
@@ -156,14 +148,6 @@ export default function ContactPage() {
                   >
                     {site.email}
                   </a>
-                  {site.secondaryEmail !== site.email ? (
-                    <a
-                      href={`mailto:${site.secondaryEmail}`}
-                      className="text-xs text-slate-600 hover:text-[#0090d0] block mt-0.5"
-                    >
-                      {site.secondaryEmail}
-                    </a>
-                  ) : null}
                 </div>
               </div>
 

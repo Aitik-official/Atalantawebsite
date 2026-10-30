@@ -258,11 +258,6 @@ export default function Footer() {
                   <a href={site.phoneHref} className="hover:text-[#0090d0] transition font-bold text-white">
                     {site.phone}
                   </a>
-                  {site.secondaryPhone !== site.phone ? (
-                    <a href={`tel:${site.secondaryPhone.replace(/\s/g, "")}`} className="hover:text-[#0090d0] transition text-slate-400">
-                      {site.secondaryPhone}
-                    </a>
-                  ) : null}
                 </div>
               </div>
 
@@ -272,11 +267,6 @@ export default function Footer() {
                   <a href={`mailto:${site.email}`} className="hover:text-[#0090d0] transition font-semibold text-white">
                     {site.email}
                   </a>
-                  {site.secondaryEmail !== site.email ? (
-                    <a href={`mailto:${site.secondaryEmail}`} className="hover:text-[#0090d0] transition text-slate-400">
-                      {site.secondaryEmail}
-                    </a>
-                  ) : null}
                 </div>
               </div>
 
