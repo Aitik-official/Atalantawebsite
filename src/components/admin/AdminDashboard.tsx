@@ -44,6 +44,7 @@ type ProductFormState = {
   price: string;
   mrp: string;
   image: string;
+  gallery: string[];
   description: string;
   material: string;
   warranty: string;
@@ -68,6 +69,7 @@ const emptyProductForm = (): ProductFormState => ({
   price: "",
   mrp: "",
   image: "",
+  gallery: [],
   description: "",
   material: "",
   warranty: "1 Year Manufacturer Warranty",
@@ -314,13 +316,21 @@ export default function AdminDashboard() {
 
   function openEditProduct(product: ProductItem) {
     setEditingProduct(product);
+    const gallery = Array.from(
+      new Set(
+        [product.image, ...(product.gallery || [])]
+          .map((item) => item.trim())
+          .filter(Boolean),
+      ),
+    );
     setProductForm({
       title: product.title,
       category: product.category,
       subcategory: product.subcategory,
       price: String(product.priceNumber || product.price.replace(/[^\d.]/g, "")),
       mrp: product.mrp,
-      image: product.image,
+      image: gallery[0] || product.image || "",
+      gallery,
       description: product.description,
       material: product.material,
       warranty: product.warranty,
@@ -339,13 +349,21 @@ export default function AdminDashboard() {
     event.preventDefault();
     setSavingProduct(true);
     setError("");
+    const gallery = Array.from(
+      new Set(
+        [productForm.image, ...productForm.gallery]
+          .map((item) => item.trim())
+          .filter(Boolean),
+      ),
+    );
     const payload = {
       title: productForm.title,
       category: productForm.category,
       subcategory: productForm.subcategory,
       price: productForm.price,
       mrp: productForm.mrp,
-      image: productForm.image,
+      image: gallery[0] || productForm.image,
+      gallery,
       description: productForm.description,
       material: productForm.material,
       warranty: productForm.warranty,
@@ -1083,10 +1101,12 @@ export default function AdminDashboard() {
                 onChange={(value) => setProductForm((form) => ({ ...form, mrp: value }))}
               />
             </div>
-            <ImageField
-              label="Product image"
-              value={productForm.image}
-              onChange={(value) => setProductForm((form) => ({ ...form, image: value }))}
+            <ProductImagesField
+              image={productForm.image}
+              gallery={productForm.gallery}
+              onChange={({ image, gallery }) =>
+                setProductForm((form) => ({ ...form, image, gallery }))
+              }
             />
             <Field
               label="Material"
@@ -1702,6 +1722,168 @@ function Field({
         className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
       />
     </label>
+  );
+}
+
+function ProductImagesField({
+  image,
+  gallery,
+  onChange,
+}: {
+  image: string;
+  gallery: string[];
+  onChange: (next: { image: string; gallery: string[] }) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [progress, setProgress] = useState("");
+  const images = useMemo(() => {
+    return Array.from(
+      new Set(
+        [image, ...gallery]
+          .map((item) => item.trim())
+          .filter(Boolean),
+      ),
+    );
+  }, [image, gallery]);
+
+  function commit(next: string[]) {
+    onChange({ image: next[0] || "", gallery: next });
+  }
+
+  async function onFiles(fileList?: FileList | null, input?: HTMLInputElement | null) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    setUploading(true);
+    setUploadError("");
+    setProgress(`Uploading 0 / ${files.length}`);
+    const uploaded: string[] = [];
+    const failures: string[] = [];
+    try {
+      for (let index = 0; index < files.length; index += 1) {
+        setProgress(`Uploading ${index + 1} / ${files.length}`);
+        try {
+          uploaded.push(await uploadAdminImage(files[index]));
+        } catch (error) {
+          failures.push(
+            `${files[index].name}: ${error instanceof Error ? error.message : "failed"}`,
+          );
+        }
+      }
+      if (uploaded.length) {
+        commit([...images, ...uploaded]);
+      }
+      if (failures.length) {
+        setUploadError(
+          uploaded.length
+            ? `Uploaded ${uploaded.length}. Some failed: ${failures.join(" · ")}`
+            : failures.join(" · "),
+        );
+      }
+    } finally {
+      setUploading(false);
+      setProgress("");
+      if (input) input.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
+          Product images
+        </span>
+        <span className="text-[11px] font-medium text-slate-500">
+          First image is the main photo · select multiple files at once
+        </span>
+      </div>
+
+      {images.length ? (
+        <div className="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {images.map((src, index) => {
+            const preview = mediaUrl(src) || src;
+            return (
+              <div
+                key={`${src}-${index}`}
+                className="relative rounded-2xl border border-slate-200 bg-slate-50 p-2"
+              >
+                <img
+                  src={preview}
+                  alt=""
+                  className="h-28 w-full rounded-xl object-contain bg-white"
+                />
+                {index === 0 ? (
+                  <span className="absolute left-3 top-3 rounded-full bg-[#0090d0] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                    Main
+                  </span>
+                ) : null}
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  {index === 0 ? (
+                    <span className="text-[11px] font-bold text-slate-500">Cover image</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const next = [src, ...images.filter((item) => item !== src)];
+                        commit(next);
+                      }}
+                      className="text-[11px] font-bold text-[#0090d0] hover:underline"
+                    >
+                      Set as main
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => commit(images.filter((item) => item !== src))}
+                    className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-2 py-1 text-[11px] font-bold text-red-700 hover:bg-red-100"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    Remove
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="mb-3 flex h-28 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-xs font-bold text-slate-400">
+          No product photos yet
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-2">
+        <label
+          className={`inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 ${
+            uploading ? "pointer-events-none opacity-60" : "cursor-pointer"
+          }`}
+        >
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? progress || "Uploading..." : "Upload images"}
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            multiple
+            className="hidden"
+            disabled={uploading}
+            onChange={(event) => void onFiles(event.target.files, event.target)}
+          />
+        </label>
+        {images.length ? (
+          <button
+            type="button"
+            onClick={() => {
+              commit([]);
+              setUploadError("");
+            }}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-100"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Remove all
+          </button>
+        ) : null}
+      </div>
+      {uploadError ? <p className="mt-1 text-xs text-red-600">{uploadError}</p> : null}
+    </div>
   );
 }
 
