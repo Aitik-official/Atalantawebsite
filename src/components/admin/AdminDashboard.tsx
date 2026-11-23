@@ -1104,8 +1104,9 @@ export default function AdminDashboard() {
             <ProductImagesField
               image={productForm.image}
               gallery={productForm.gallery}
-              onChange={({ image, gallery }) =>
-                setProductForm((form) => ({ ...form, image, gallery }))
+              colors={productForm.colors}
+              onChange={({ image, gallery, colors }) =>
+                setProductForm((form) => ({ ...form, image, gallery, colors }))
               }
             />
             <Field
@@ -1443,6 +1444,9 @@ function ProductColorFields({
         <Palette className="h-3.5 w-3.5" />
         Available colours
       </p>
+      <p className="mb-3 text-[11px] text-slate-500">
+        Optional. You can also link a colour under each product photo above — clicking that colour on the product page shows that photo.
+      </p>
       <div className="mb-3 flex flex-wrap gap-2">
         {PRESET_PRODUCT_COLORS.map((preset) => {
           const selected = colors.some(
@@ -1725,14 +1729,29 @@ function Field({
   );
 }
 
+function sameImage(a?: string, b?: string) {
+  const left = mediaUrl(a || "") || (a || "").trim();
+  const right = mediaUrl(b || "") || (b || "").trim();
+  return Boolean(left) && left === right;
+}
+
+function stripImageFromColors(colors: ProductColor[], src: string): ProductColor[] {
+  return colors.map((color) => {
+    if (!sameImage(color.image, src)) return color;
+    return { name: color.name, hex: color.hex };
+  });
+}
+
 function ProductImagesField({
   image,
   gallery,
+  colors,
   onChange,
 }: {
   image: string;
   gallery: string[];
-  onChange: (next: { image: string; gallery: string[] }) => void;
+  colors: ProductColor[];
+  onChange: (next: { image: string; gallery: string[]; colors: ProductColor[] }) => void;
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -1747,8 +1766,39 @@ function ProductImagesField({
     );
   }, [image, gallery]);
 
-  function commit(next: string[]) {
-    onChange({ image: next[0] || "", gallery: next });
+  function commit(nextImages: string[], nextColors: ProductColor[] = colors) {
+    const kept: ProductColor[] = nextColors.map((color) => {
+      if (!color.image) return color;
+      const stillThere = nextImages.some((src) => sameImage(src, color.image));
+      if (stillThere) return color;
+      return { name: color.name, hex: color.hex };
+    });
+    onChange({
+      image: nextImages[0] || "",
+      gallery: nextImages,
+      colors: kept,
+    });
+  }
+
+  function assignColor(src: string, preset: ProductColor | null) {
+    let next: ProductColor[] = stripImageFromColors(colors, src);
+    if (!preset) {
+      commit(images, next);
+      return;
+    }
+    const existing = next.find(
+      (color) => color.name.toLowerCase() === preset.name.toLowerCase(),
+    );
+    if (existing) {
+      next = next.map((color) =>
+        color.name.toLowerCase() === preset.name.toLowerCase()
+          ? { name: color.name, hex: preset.hex, image: src }
+          : color,
+      );
+    } else {
+      next = [...next, { name: preset.name, hex: preset.hex, image: src }];
+    }
+    commit(images, next);
   }
 
   async function onFiles(fileList?: FileList | null, input?: HTMLInputElement | null) {
@@ -1794,18 +1844,19 @@ function ProductImagesField({
           Product images
         </span>
         <span className="text-[11px] font-medium text-slate-500">
-          First image is the main photo · select multiple files at once
+          First image is main · colour under each photo is optional
         </span>
       </div>
 
       {images.length ? (
-        <div className="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {images.map((src, index) => {
             const preview = mediaUrl(src) || src;
+            const linked = colors.find((color) => sameImage(color.image, src));
             return (
               <div
                 key={`${src}-${index}`}
-                className="relative rounded-2xl border border-slate-200 bg-slate-50 p-2"
+                className="relative rounded-2xl border border-slate-200 bg-slate-50 p-3"
               >
                 <img
                   src={preview}
@@ -1813,7 +1864,7 @@ function ProductImagesField({
                   className="h-28 w-full rounded-xl object-contain bg-white"
                 />
                 {index === 0 ? (
-                  <span className="absolute left-3 top-3 rounded-full bg-[#0090d0] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  <span className="absolute left-4 top-4 rounded-full bg-[#0090d0] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                     Main
                   </span>
                 ) : null}
@@ -1840,6 +1891,66 @@ function ProductImagesField({
                     <Trash2 className="h-3 w-3" />
                     Remove
                   </button>
+                </div>
+
+                <div className="mt-3 border-t border-slate-200 pt-3">
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                      Colour for this photo
+                      <span className="ml-1 font-medium normal-case tracking-normal text-slate-400">
+                        (optional)
+                      </span>
+                    </p>
+                    {linked ? (
+                      <button
+                        type="button"
+                        onClick={() => assignColor(src, null)}
+                        className="text-[11px] font-bold text-slate-500 hover:text-red-600"
+                      >
+                        Clear colour
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {PRESET_PRODUCT_COLORS.map((preset) => {
+                      const selected =
+                        linked?.name.toLowerCase() === preset.name.toLowerCase();
+                      return (
+                        <button
+                          key={preset.name}
+                          type="button"
+                          title={preset.name}
+                          onClick={() =>
+                            assignColor(src, selected ? null : preset)
+                          }
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-[11px] font-bold ${
+                            selected
+                              ? "border-[#0090d0] bg-sky-50 text-slate-900"
+                              : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                          }`}
+                        >
+                          <span
+                            className="h-3.5 w-3.5 rounded-full border border-slate-200"
+                            style={{ backgroundColor: preset.hex }}
+                          />
+                          {preset.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {linked ? (
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
+                      <span
+                        className="h-3 w-3 rounded-full border border-slate-200"
+                        style={{ backgroundColor: linked.hex }}
+                      />
+                      Linked to {linked.name} — shown when that colour is clicked
+                    </p>
+                  ) : (
+                    <p className="mt-2 text-[11px] text-slate-400">
+                      No colour linked. Leave blank if this photo is not colour-specific.
+                    </p>
+                  )}
                 </div>
               </div>
             );

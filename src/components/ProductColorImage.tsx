@@ -5,6 +5,12 @@ import type { ProductColor } from "@/data/site";
 import ProductColorSwatches from "@/components/ProductColorSwatches";
 import { mediaUrl } from "@/lib/media";
 
+function matchUrl(a?: string, b?: string) {
+  const left = mediaUrl(a || "") || (a || "").trim();
+  const right = mediaUrl(b || "") || (b || "").trim();
+  return Boolean(left) && left === right;
+}
+
 export default function ProductColorImage({
   title,
   image,
@@ -25,7 +31,7 @@ export default function ProductColorImage({
 
   const thumbs = useMemo(() => {
     const items = [image, ...gallery, ...colors.map((color) => color.image || "")]
-      .map((item) => mediaUrl(item.trim()))
+      .map((item) => mediaUrl(item.trim()) || item.trim())
       .filter(Boolean);
     return Array.from(new Set(items));
   }, [image, gallery, colors]);
@@ -64,8 +70,8 @@ export default function ProductColorImage({
       {thumbs.length > 1 ? (
         <div className="grid grid-cols-4 gap-3">
           {thumbs.map((img) => {
-            const colorIndex = colors.findIndex((color) => color.image === img);
-            const isActive = current === img;
+            const colorIndex = colors.findIndex((color) => matchUrl(color.image, img));
+            const isActive = matchUrl(current, img);
             return (
               <button
                 key={img}
