@@ -32,6 +32,7 @@ import type {
   ProductItem,
   StoredCategory,
 } from "@/lib/catalog-types";
+import { mediaUrl } from "@/lib/media";
 import { PRESET_PRODUCT_COLORS } from "@/lib/product-colors";
 
 type Tab = "overview" | "products" | "categories" | "enquiries";
@@ -1514,6 +1515,27 @@ function ProductColorFields({
   );
 }
 
+async function uploadAdminImage(file: File) {
+  const form = new FormData();
+  form.append("image", file);
+  const response = await fetch("/api/admin/upload", { method: "POST", body: form });
+  const text = await response.text();
+  let data: { ok?: boolean; image?: string; error?: string } = {};
+  try {
+    data = JSON.parse(text) as typeof data;
+  } catch {
+    throw new Error(
+      response.status === 413
+        ? "Image is too large. Use a file under 4 MB."
+        : "Upload failed. Check MongoDB is configured on the server.",
+    );
+  }
+  if (!response.ok || !data?.ok || !data.image) {
+    throw new Error(data?.error || "Upload failed.");
+  }
+  return data.image;
+}
+
 function ColorImageUpload({
   value,
   onChange,
@@ -1523,57 +1545,75 @@ function ColorImageUpload({
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const preview = mediaUrl(value) || value;
 
-  async function onFile(file?: File) {
+  async function onFile(file?: File | null, input?: HTMLInputElement | null) {
     if (!file) return;
     setUploading(true);
     setUploadError("");
-    const form = new FormData();
-    form.append("image", file);
     try {
-      const response = await fetch("/api/admin/upload", { method: "POST", body: form });
-      const data = await response.json();
-      if (!response.ok || !data?.ok) {
-        setUploadError(data?.error || "Upload failed.");
-        return;
-      }
-      onChange(data.image);
-    } catch {
-      setUploadError("Upload failed.");
+      const image = await uploadAdminImage(file);
+      onChange(image);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Upload failed.");
     } finally {
       setUploading(false);
+      if (input) input.value = "";
     }
   }
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-      {value ? (
-        <img
-          src={value}
-          alt=""
-          className="h-16 w-16 rounded-xl border border-slate-200 bg-white object-contain"
-        />
-      ) : (
-        <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-[10px] font-bold text-slate-400">
-          No photo
-        </div>
-      )}
-      <input
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Colour image URL"
-        className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm"
-      />
-      <label className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50">
-        <Upload className="h-3.5 w-3.5" />
-        {uploading ? "Uploading..." : "Upload"}
+    <div className="space-y-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        {preview ? (
+          <div className="relative">
+            <img
+              src={preview}
+              alt=""
+              className="h-16 w-16 rounded-xl border border-slate-200 bg-white object-contain"
+            />
+            <button
+              type="button"
+              onClick={() => onChange("")}
+              className="absolute -right-2 -top-2 rounded-full bg-white p-1 text-slate-500 shadow border border-slate-200 hover:text-red-600"
+              aria-label="Remove colour image"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-[10px] font-bold text-slate-400">
+            No photo
+          </div>
+        )}
         <input
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          className="hidden"
-          onChange={(event) => void onFile(event.target.files?.[0])}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder="Colour image URL or upload below"
+          className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm"
         />
-      </label>
+        <label className={`inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 ${uploading ? "pointer-events-none opacity-60" : "cursor-pointer"}`}>
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? "Uploading..." : value ? "Replace" : "Upload"}
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="hidden"
+            disabled={uploading}
+            onChange={(event) => void onFile(event.target.files?.[0], event.target)}
+          />
+        </label>
+        {value ? (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="inline-flex items-center justify-center gap-1 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-100"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Remove
+          </button>
+        ) : null}
+      </div>
       {uploadError ? <p className="text-xs text-red-600">{uploadError}</p> : null}
     </div>
   );
@@ -1676,44 +1716,69 @@ function ImageField({
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const preview = mediaUrl(value) || value;
 
-  async function onFile(file?: File) {
+  async function onFile(file?: File | null, input?: HTMLInputElement | null) {
     if (!file) return;
     setUploading(true);
     setUploadError("");
-    const form = new FormData();
-    form.append("image", file);
     try {
-      const response = await fetch("/api/admin/upload", { method: "POST", body: form });
-      const data = await response.json();
-      if (!response.ok || !data?.ok) {
-        setUploadError(data?.error || "Upload failed.");
-        return;
-      }
-      onChange(data.image);
-    } catch {
-      setUploadError("Upload failed.");
+      const image = await uploadAdminImage(file);
+      onChange(image);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Upload failed.");
     } finally {
       setUploading(false);
+      if (input) input.value = "";
     }
   }
 
   return (
     <div>
       <Field label={`${label} URL`} value={value} onChange={onChange} />
-      <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50">
-        <Upload className="h-3.5 w-3.5" />
-        {uploading ? "Uploading..." : "Upload image"}
-        <input
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          className="hidden"
-          onChange={(event) => void onFile(event.target.files?.[0])}
-        />
-      </label>
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <label className={`inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 ${uploading ? "pointer-events-none opacity-60" : "cursor-pointer"}`}>
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? "Uploading..." : value ? "Replace image" : "Upload image"}
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="hidden"
+            disabled={uploading}
+            onChange={(event) => void onFile(event.target.files?.[0], event.target)}
+          />
+        </label>
+        {value ? (
+          <button
+            type="button"
+            onClick={() => {
+              onChange("");
+              setUploadError("");
+            }}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-100"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Remove image
+          </button>
+        ) : null}
+      </div>
       {uploadError ? <p className="mt-1 text-xs text-red-600">{uploadError}</p> : null}
-      {value ? (
-        <img src={value} alt="" className="mt-3 h-28 w-28 rounded-xl border border-slate-200 object-contain bg-slate-50" />
+      {preview ? (
+        <div className="relative mt-3 inline-block">
+          <img
+            src={preview}
+            alt=""
+            className="h-28 w-28 rounded-xl border border-slate-200 object-contain bg-slate-50"
+          />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute -right-2 -top-2 rounded-full border border-slate-200 bg-white p-1 text-slate-500 shadow hover:text-red-600"
+            aria-label="Remove image"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
       ) : null}
     </div>
   );
