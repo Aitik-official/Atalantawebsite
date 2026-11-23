@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  ArrowRight,
   Filter,
   Inbox,
   Layers,
@@ -24,6 +25,8 @@ import {
   Phone,
   Building2,
   RefreshCw,
+  Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import type {
   Enquiry,
@@ -227,6 +230,21 @@ export default function AdminDashboard() {
   }
 
   const newEnquiries = enquiries.filter((item) => item.status === "new").length;
+  const outOfStock = products.filter((item) => !item.inStock).length;
+  const recentEnquiries = useMemo(() => enquiries.slice(0, 6), [enquiries]);
+  const recentProducts = useMemo(() => products.slice(0, 8), [products]);
+  const categoryBreakdown = useMemo(
+    () =>
+      categories.map((category) => ({
+        id: category.id,
+        name: category.name,
+        image: category.image,
+        count: products.filter(
+          (product) => product.category.toLowerCase() === category.categoryKey.toLowerCase(),
+        ).length,
+      })),
+    [categories, products],
+  );
   const selectedCategorySubs =
     categories.find((category) => category.categoryKey === productForm.category)?.subcategories ||
     [];
@@ -679,11 +697,275 @@ export default function AdminDashboard() {
         ) : null}
 
         {tab === "overview" ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label="Products" value={products.length} icon={Package} />
-            <StatCard label="Categories" value={categories.length} icon={Layers} />
-            <StatCard label="New enquiries" value={newEnquiries} icon={Inbox} accent />
-            <StatCard label="Total enquiries" value={enquiries.length} icon={Mail} />
+          <div className="space-y-6">
+            <section className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-900 px-6 py-7 text-white shadow-sm sm:px-8">
+              <div className="pointer-events-none absolute -right-10 -top-16 h-56 w-56 rounded-full bg-[#0090d0]/30 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-[#e31e24]/25 blur-3xl" />
+              <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-2xl">
+                  <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-sky-200">
+                    <Sparkles className="h-3.5 w-3.5 text-[#0090d0]" />
+                    Live catalog desk
+                  </p>
+                  <h3 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">
+                    Atlanta Furniture operations overview
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                    Track catalog health, open RFQs, and jump into the work that needs attention.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={openCreateProduct}
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#0090d0] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#0073ab]"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add product
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab("enquiries")}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/15"
+                  >
+                    <Inbox className="h-4 w-4" />
+                    Review enquiries
+                    {newEnquiries > 0 ? (
+                      <span className="rounded-full bg-[#e31e24] px-1.5 py-0.5 text-[10px] leading-none">
+                        {newEnquiries}
+                      </span>
+                    ) : null}
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <StatCard
+                label="Products"
+                value={products.length}
+                icon={Package}
+                hint="Live in catalog"
+                onClick={() => setTab("products")}
+              />
+              <StatCard
+                label="Categories"
+                value={categories.length}
+                icon={Layers}
+                hint="Series lines"
+                onClick={() => setTab("categories")}
+              />
+              <StatCard
+                label="New enquiries"
+                value={newEnquiries}
+                icon={Inbox}
+                accent
+                hint="Needs a reply"
+                onClick={() => {
+                  setEnquiryStatusFilter("new");
+                  setTab("enquiries");
+                }}
+              />
+              <StatCard
+                label="Out of stock"
+                value={outOfStock}
+                icon={AlertTriangle}
+                warn={outOfStock > 0}
+                hint="Inventory flags"
+                onClick={() => setTab("products")}
+              />
+            </section>
+
+            <section className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              <QuickAction
+                title="Manage products"
+                description="Edit prices, photos, colours, and stock."
+                icon={Package}
+                onClick={() => setTab("products")}
+              />
+              <QuickAction
+                title="Organise categories"
+                description="Keep series and subcategories tidy."
+                icon={Layers}
+                onClick={() => setTab("categories")}
+              />
+              <QuickAction
+                title="Enquiry inbox"
+                description={`${enquiries.length} total · ${newEnquiries} new waiting.`}
+                icon={Mail}
+                onClick={() => setTab("enquiries")}
+              />
+            </section>
+
+            <section className="grid grid-cols-1 gap-6 xl:grid-cols-5">
+              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm xl:col-span-3">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <h4 className="text-base font-extrabold text-slate-900">Recent enquiries</h4>
+                    <p className="text-xs font-medium text-slate-500">
+                      Latest customer RFQs from the website
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setTab("enquiries")}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#0090d0] hover:underline"
+                  >
+                    View all
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                {recentEnquiries.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm font-medium text-slate-500">
+                    No enquiries yet. New RFQs will show up here.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {recentEnquiries.map((enquiry) => (
+                      <button
+                        key={enquiry.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedEnquiry(enquiry);
+                          setTab("enquiries");
+                        }}
+                        className="flex w-full items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50/70 px-3.5 py-3 text-left transition hover:border-[#0090d0]/40 hover:bg-sky-50/50"
+                      >
+                        <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#0090d0] shadow-sm">
+                          <Inbox className="h-4 w-4" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="truncate text-sm font-bold text-slate-900">
+                              {enquiry.name}
+                            </p>
+                            <StatusBadge status={enquiry.status} />
+                          </div>
+                          <p className="mt-0.5 truncate text-xs font-medium text-slate-500">
+                            {enquiry.category}
+                            {enquiry.productTitle ? ` · ${enquiry.productTitle}` : ""}
+                          </p>
+                          <p className="mt-1 line-clamp-1 text-xs text-slate-600">
+                            {enquiry.message || "No message details provided."}
+                          </p>
+                        </div>
+                        <span className="shrink-0 text-[11px] font-semibold text-slate-400">
+                          {formatOverviewDate(enquiry.createdAt)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm xl:col-span-2">
+                <div className="mb-4">
+                  <h4 className="text-base font-extrabold text-slate-900">Catalog by category</h4>
+                  <p className="text-xs font-medium text-slate-500">
+                    Product distribution across series
+                  </p>
+                </div>
+                {categoryBreakdown.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm font-medium text-slate-500">
+                    Add categories to see the breakdown.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {categoryBreakdown.map((category) => {
+                      const share =
+                        products.length > 0
+                          ? Math.round((category.count / products.length) * 100)
+                          : 0;
+                      return (
+                        <button
+                          key={category.id}
+                          type="button"
+                          onClick={() => {
+                            setProductCategory(
+                              categories.find((item) => item.id === category.id)?.categoryKey ||
+                                "all",
+                            );
+                            setTab("products");
+                          }}
+                          className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 p-3 text-left transition hover:border-[#0090d0]/40 hover:bg-sky-50/40"
+                        >
+                          <div className="mb-2 flex items-center justify-between gap-2">
+                            <span className="truncate text-sm font-bold text-slate-800">
+                              {category.name}
+                            </span>
+                            <span className="text-xs font-extrabold text-[#0090d0]">
+                              {category.count}
+                            </span>
+                          </div>
+                          <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-[#0090d0] to-[#0073ab]"
+                              style={{ width: `${share}%` }}
+                            />
+                          </div>
+                          <p className="mt-1.5 text-[11px] font-medium text-slate-500">
+                            {share}% of catalog
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <h4 className="text-base font-extrabold text-slate-900">Latest products</h4>
+                  <p className="text-xs font-medium text-slate-500">
+                    Recently loaded catalog items
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setTab("products")}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#0090d0] hover:underline"
+                >
+                  Open products
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              {recentProducts.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm font-medium text-slate-500">
+                  No products yet. Add your first model to start the catalog.
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-8">
+                  {recentProducts.map((product) => (
+                    <button
+                      key={product.id}
+                      type="button"
+                      onClick={() => openEditProduct(product)}
+                      className="rounded-2xl border border-slate-200 bg-slate-50 p-2 text-left transition hover:border-[#0090d0]/40 hover:bg-white hover:shadow-sm"
+                    >
+                      <div className="mb-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-white">
+                        {product.image ? (
+                          <img
+                            src={mediaUrl(product.image) || product.image}
+                            alt=""
+                            className="h-full w-full object-contain p-2"
+                          />
+                        ) : (
+                          <Package className="h-6 w-6 text-slate-300" />
+                        )}
+                      </div>
+                      <p className="line-clamp-2 text-[11px] font-bold text-slate-800">
+                        {product.title}
+                      </p>
+                      <p className="mt-0.5 text-[10px] font-semibold text-[#0090d0]">
+                        {product.price}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </section>
           </div>
         ) : null}
 
@@ -1373,29 +1655,83 @@ export default function AdminDashboard() {
   );
 }
 
+function formatOverviewDate(value?: string) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
 function StatCard({
   label,
   value,
   icon: Icon,
   accent = false,
+  warn = false,
+  hint,
+  onClick,
 }: {
   label: string;
   value: number;
   icon: typeof Package;
   accent?: boolean;
+  warn?: boolean;
+  hint?: string;
+  onClick?: () => void;
+}) {
+  const tone = warn
+    ? "bg-amber-50 text-amber-700"
+    : accent
+      ? "bg-red-50 text-[#e31e24]"
+      : "bg-sky-50 text-[#0090d0]";
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-[1.5rem] border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#0090d0]/35 hover:shadow-md"
+    >
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className={`inline-flex rounded-2xl p-2.5 ${tone}`}>
+          <Icon className="h-5 w-5" />
+        </div>
+        <ArrowRight className="h-4 w-4 text-slate-300" />
+      </div>
+      <div className="text-3xl font-extrabold tracking-tight text-slate-900">{value}</div>
+      <div className="mt-1 text-sm font-bold text-slate-700">{label}</div>
+      {hint ? <div className="mt-1 text-xs font-medium text-slate-500">{hint}</div> : null}
+    </button>
+  );
+}
+
+function QuickAction({
+  title,
+  description,
+  icon: Icon,
+  onClick,
+}: {
+  title: string;
+  description: string;
+  icon: typeof Package;
+  onClick: () => void;
 }) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div
-        className={`mb-3 inline-flex rounded-xl p-2 ${
-          accent ? "bg-red-50 text-[#e31e24]" : "bg-sky-50 text-[#0090d0]"
-        }`}
-      >
+    <button
+      type="button"
+      onClick={onClick}
+      className="group flex items-start gap-3 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-[#0090d0]/40 hover:bg-sky-50/40"
+    >
+      <div className="inline-flex rounded-2xl bg-sky-50 p-2.5 text-[#0090d0] group-hover:bg-[#0090d0] group-hover:text-white">
         <Icon className="h-5 w-5" />
       </div>
-      <div className="text-3xl font-extrabold text-slate-900">{value}</div>
-      <div className="text-sm font-medium text-slate-500">{label}</div>
-    </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-extrabold text-slate-900">{title}</p>
+        <p className="mt-1 text-xs leading-relaxed text-slate-500">{description}</p>
+      </div>
+      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-300 group-hover:text-[#0090d0]" />
+    </button>
   );
 }
 
